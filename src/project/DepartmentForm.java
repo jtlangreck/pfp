@@ -167,7 +167,7 @@ public class DepartmentForm extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
-        Project.writefiles(); 
+        //Project.writefiles(); 
         dispose(); 
     }//GEN-LAST:event_jMenu7MouseClicked
 
