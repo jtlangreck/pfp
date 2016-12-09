@@ -3,25 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package readtolist;
+package project;
 
 /**
  *
  * @author tholm
  */
 public class EmployeeNode {
+
     private String firstName;
     private String lastName;
     private String gender;
     private String phone;
-    private String email;
     private String employeeID;
+    private String secondPhone;
+    private String email;
     private String hireDate;
     private String endDate;
-    private String secondPhone;
+
     private EmployeeNode next;
 
-    public EmployeeNode(String firstName, String lastName, String gender, String phone, String employeeID, String email, String hireDate, String secondPhone, String endDate) {
+    public EmployeeNode(String firstName, String lastName, String gender, String phone, String employeeID, String secondPhone, String email, String hireDate, String endDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -106,6 +108,14 @@ public class EmployeeNode {
         this.employeeID = employeeID;
     }
 
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
     
     
+
 }
