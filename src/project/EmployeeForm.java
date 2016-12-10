@@ -8,6 +8,7 @@ package project;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -22,7 +23,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     public EmployeeForm() {
         initComponents();
-        //EmployeeList current = new EmployeeList();
+
         empList = readEmployee("Employees.txt");
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
 
@@ -79,6 +80,8 @@ public class EmployeeForm extends javax.swing.JFrame {
         bnCurrent = new javax.swing.JButton();
         bnPast = new javax.swing.JButton();
         lbTest = new java.awt.Label();
+        jdHire = new com.toedter.calendar.JDateChooser();
+        jdEnd = new com.toedter.calendar.JDateChooser();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -161,6 +164,10 @@ public class EmployeeForm extends javax.swing.JFrame {
         bnPast.setText("Past");
 
         lbTest.setText("label1");
+
+        jdHire.setDateFormatString("MM/dd/yyyy");
+
+        jdEnd.setDateFormatString("MM/dd/yyyy");
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -254,13 +261,15 @@ public class EmployeeForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rbFemale)
-                                .addGap(0, 117, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(tbFirstName)
                             .addComponent(tbSSN)
                             .addComponent(tbEmplyID, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(tbLastName)
                             .addComponent(tbEmail)
-                            .addComponent(tbPhone))
+                            .addComponent(tbPhone)
+                            .addComponent(jdHire, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jdEnd, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
@@ -309,9 +318,13 @@ public class EmployeeForm extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(tbEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(jdHire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jdEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -380,8 +393,13 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
-        String test = model.getValueAt(0, 0).toString();
-        lbTest.setText(test);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        String sd = dateFormat.format(jdHire.getDate());
+
+        String date = String.valueOf(jdHire);
+        lbTest.setText(sd);
 
 
     }//GEN-LAST:event_bnUpdateActionPerformed
@@ -389,6 +407,10 @@ public class EmployeeForm extends javax.swing.JFrame {
     private void bnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnAddActionPerformed
         int validate = 0;
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        String hd = dateFormat.format(jdHire.getDate());
+        String ed = dateFormat.format(jdEnd.getDate());
 
         //gender validation:
         String gender = "";
@@ -494,16 +516,14 @@ public class EmployeeForm extends javax.swing.JFrame {
         if (validate == 6) {
             String firstName = tbFirstName.getText().substring(0, 1).toUpperCase() + tbFirstName.getText().substring(1);
 
-            model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), "N/A", "N/A"});
-
-            
+            model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed});
 
             //(firstName, lastName, gender, social, id, phone, email, hireDate, endDate)
             empList = readEmployee("Employees.txt");
-            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, tbSSN.getText(), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), "N/A", "N/A");
+            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, tbSSN.getText(), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed);
             Project.addEmpRecords(empList);
             Project.closeFile();
-            
+
             tbFirstName.setText("");
             tbLastName.setText("");
             tbPhone.setText("");
@@ -511,20 +531,6 @@ public class EmployeeForm extends javax.swing.JFrame {
             tbSSN.setText("");
             tbEmplyID.setText("");
 
-//            for (int i = 0; i < model.getRowCount(); i++) {
-//                String first = model.getValueAt(i, 2).toString();
-//                String last = model.getValueAt(i, 1).toString();
-//                String gend = model.getValueAt(i, 3).toString();
-//                String tphone = model.getValueAt(i, 4).toString();
-//                String empID = model.getValueAt(i, 0).toString();
-//                String mail = model.getValueAt(i, 5).toString();
-//                String HD = model.getValueAt(i, 6).toString();
-//                String ED = model.getValueAt(i, 7).toString();
-//                
-//                
-//                temp.add(first, last, gend, tphone, empID, "N/A", mail, HD, ED);
-//                
-//            }
         }
 
 
@@ -673,6 +679,8 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JScrollPane jScrollPane2;
+    private com.toedter.calendar.JDateChooser jdEnd;
+    private com.toedter.calendar.JDateChooser jdHire;
     private java.awt.Label lbTest;
     private javax.swing.JRadioButton rbFemale;
     private javax.swing.JRadioButton rbMale;
