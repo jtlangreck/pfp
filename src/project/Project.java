@@ -50,7 +50,7 @@ public class Project {
         String id = "";
         String hireDate = "";
         String endDate = "";
-        String secondPhone = "";
+        String social = "";
 
         openFile(name);
 
@@ -64,11 +64,11 @@ public class Project {
             for (String ss : arr) {
 
                 if (position == 1) {
-                    firstName = ss;
+                    lastName = ss;
                 }
 
                 if (position == 2) {
-                    lastName = ss;
+                    firstName = ss;
                 }
 
                 if (position == 3) {
@@ -84,7 +84,7 @@ public class Project {
                 }
 
                 if (position == 6) {
-                    secondPhone = ss;
+                    social = ss;
                 }
 
                 if (position == 7) {
@@ -101,7 +101,7 @@ public class Project {
                 position++;
 
             }
-            list.add(firstName, lastName, gender, phone, id, email, hireDate, secondPhone, endDate);
+            list.add(firstName, lastName, gender, social, id, phone, email, hireDate, endDate);
         }
 
         return list;
@@ -124,7 +124,7 @@ public class Project {
 
             output.format("%s %s %s %s %s %s %s %s %s%n", test.getFirstName(),
                     test.getLastName(), test.getGender(), test.getPhone(),
-                    test.getEmployeeID(), test.getSecondPhone(),
+                    test.getEmployeeID(), test.getSocial(),
                     test.getEmail(), test.getHireDate(), test.getEndDate());
 
             test = test.getNext();

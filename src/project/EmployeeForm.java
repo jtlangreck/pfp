@@ -8,6 +8,11 @@ package project;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.util.Formatter;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import static project.Project.empList;
+import static project.Project.readEmployee;
 
 /**
  *
@@ -15,15 +20,27 @@ import java.awt.event.WindowEvent;
  */
 public class EmployeeForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainForm
-     */
     public EmployeeForm() {
         initComponents();
+        //EmployeeList current = new EmployeeList();
+        empList = readEmployee("Employees.txt");
+        DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+
+        EmployeeNode temp = empList.getHead();
+        for (int i = 0; i < empList.size(); i++) {
+
+            model.addRow(new Object[]{temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), temp.getGender(), temp.getPhone(), temp.getEmail(), temp.getHireDate(), temp.getEndDate()});
+//            output.format("%s %s %s %s %s %s %s %s %s%n", test.getFirstName(),
+//                    test.getLastName(), test.getGender(), test.getPhone(),
+//                    test.getEmployeeID(), test.getSecondPhone(),
+//                    test.getEmail(), test.getHireDate(), test.getEndDate());
+
+            temp = temp.getNext();
+        }
     }
-    
-    public void close(){
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+
+    public void close() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
 
@@ -36,9 +53,32 @@ public class EmployeeForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbEmployees = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        rbMale = new javax.swing.JRadioButton();
+        rbFemale = new javax.swing.JRadioButton();
+        tbFirstName = new javax.swing.JTextField();
+        tbSSN = new javax.swing.JTextField();
+        tbEmplyID = new javax.swing.JTextField();
+        tbLastName = new javax.swing.JTextField();
+        tbEmail = new javax.swing.JTextField();
+        tbPhone = new javax.swing.JTextField();
+        bnAdd = new javax.swing.JButton();
+        bnUpdate = new javax.swing.JButton();
+        bnCurrent = new javax.swing.JButton();
+        bnPast = new javax.swing.JButton();
+        lbTest = new java.awt.Label();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -54,7 +94,7 @@ public class EmployeeForm extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Jamming Jelly Employees");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -70,7 +110,57 @@ public class EmployeeForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tbEmployees);
+
+        jLabel1.setText("First Name:");
+
+        jLabel3.setText("Last Name:");
+
+        jLabel4.setText("SS#:");
+
+        jLabel5.setText("EmpyID:");
+
+        jLabel6.setText("Phone:");
+
+        jLabel7.setText("Email:");
+
+        jLabel8.setText("Hire Date:");
+
+        jLabel9.setText("End Date:");
+
+        jLabel10.setText("Gender:");
+
+        buttonGroup1.add(rbMale);
+        rbMale.setText("Male");
+
+        buttonGroup1.add(rbFemale);
+        rbFemale.setText("Female");
+
+        tbPhone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbPhoneActionPerformed(evt);
+            }
+        });
+
+        bnAdd.setText("Add");
+        bnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bnAddActionPerformed(evt);
+            }
+        });
+
+        bnUpdate.setText("Update");
+        bnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bnUpdateActionPerformed(evt);
+            }
+        });
+
+        bnCurrent.setText("Current");
+
+        bnPast.setText("Past");
+
+        lbTest.setText("label1");
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -141,10 +231,45 @@ public class EmployeeForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 619, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lbTest, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(110, 110, 110)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbMale))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rbFemale)
+                                .addGap(0, 117, Short.MAX_VALUE))
+                            .addComponent(tbFirstName)
+                            .addComponent(tbSSN)
+                            .addComponent(tbEmplyID, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tbLastName)
+                            .addComponent(tbEmail)
+                            .addComponent(tbPhone))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bnCurrent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bnPast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -152,10 +277,55 @@ public class EmployeeForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(lbTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(tbFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tbLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(tbSSN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(tbEmplyID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(tbPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(tbEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbMale)
+                    .addComponent(rbFemale))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bnAdd)
+                .addGap(8, 8, 8)
+                .addComponent(bnUpdate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bnCurrent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bnPast))
         );
 
         pack();
@@ -163,46 +333,202 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
-       // Project.writefiles(); 
-        dispose(); 
+        // Project.writefiles(); 
+        dispose();
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         // TODO add your handling code here:
-    
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         MainForm m = new MainForm();
         m.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         DepartmentForm d = new DepartmentForm();
         d.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         AssignmentForm a = new AssignmentForm();
         a.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         PayrollForm p = new PayrollForm();
         p.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu6MouseClicked
+
+    private void tbPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbPhoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbPhoneActionPerformed
+
+    private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+        String test = model.getValueAt(0, 0).toString();
+        lbTest.setText(test);
+
+
+    }//GEN-LAST:event_bnUpdateActionPerformed
+
+    private void bnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnAddActionPerformed
+        int validate = 0;
+        DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+
+        //gender validation:
+        String gender = "";
+        if (rbFemale.isSelected()) {
+            gender = "Female";
+            validate++;
+        }
+        if (rbMale.isSelected()) {
+            gender = "Male";
+            validate++;
+        }
+        if (!rbMale.isSelected() & !rbFemale.isSelected()) {
+            String message = "Please select a gender.";
+            String titleBar = "Gender";
+            informationMessage(message, titleBar);
+        }
+
+        //first name validation:
+        tbFirstName.setText(tbFirstName.getText().trim());
+        if (tbFirstName.getText().trim().equals("")) {
+            String message = "Please enter a first name.";
+            String titleBar = "First Name";
+            informationMessage(message, titleBar);
+        } else {
+            if (!validateFirstName(tbFirstName.getText().substring(0, 1).toUpperCase() + tbFirstName.getText().substring(1))) {
+                String message = "Please only enter letters for first name.";
+                String titleBar = "First Name";
+                informationMessage(message, titleBar);
+            } else {
+                validate++;
+            }
+        }
+
+        //last name validation:
+        tbLastName.setText(tbLastName.getText().trim());
+        if (tbLastName.getText().trim().equals("")) {
+            String message = "Please enter a last name.";
+            String titleBar = "Last Name";
+            informationMessage(message, titleBar);
+        } else {
+            if (!validateLastName(tbLastName.getText())) {
+                String message = "Please only enter letters for last name.";
+                String titleBar = "Last Name";
+                informationMessage(message, titleBar);
+            } else {
+                validate++;
+                if (!tbLastName.getText().contains("'")) {
+                    String lastName = tbLastName.getText().substring(0, 1).toUpperCase() + tbLastName.getText().substring(1);
+                    tbLastName.setText(lastName);
+                }
+
+            }
+        }
+
+        //phone validation:
+        tbPhone.setText(tbPhone.getText().trim());
+        if (tbPhone.getText().trim().equals("")) {
+            String message = "Please enter a phone number.";
+            String titleBar = "Phone Number";
+            informationMessage(message, titleBar);
+        } else {
+            if (!validatePhone(tbPhone.getText())) {
+                String message = "Please enter valid phone number.";
+                String titleBar = "Phone Number";
+                informationMessage(message, titleBar);
+            } else {
+                validate++;
+            }
+        }
+
+        //email validation:
+        tbEmail.setText(tbEmail.getText().trim());
+        if (tbEmail.getText().trim().equals("")) {
+            String message = "Please enter an email address.";
+            String titleBar = "Email";
+            informationMessage(message, titleBar);
+        } else {
+            if (!validateEmail(tbEmail.getText())) {
+                String message = "Please enter valid email address.";
+                String titleBar = "Email";
+                informationMessage(message, titleBar);
+            } else {
+                validate++;
+            }
+        }
+
+        //validate Social:
+        tbSSN.setText(tbSSN.getText().trim());
+        if (tbSSN.getText().trim().equals("")) {
+            String message = "Please enter a social security number.";
+            String titleBar = "Social";
+            informationMessage(message, titleBar);
+        } else {
+            if (!validateSocial(tbSSN.getText())) {
+                String message = "Please enter valid social security number.";
+                String titleBar = "Social";
+                informationMessage(message, titleBar);
+            } else {
+                validate++;
+            }
+        }
+
+        if (validate == 6) {
+            String firstName = tbFirstName.getText().substring(0, 1).toUpperCase() + tbFirstName.getText().substring(1);
+
+            model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), "N/A", "N/A"});
+
+            
+
+            //(firstName, lastName, gender, social, id, phone, email, hireDate, endDate)
+            empList = readEmployee("Employees.txt");
+            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, tbSSN.getText(), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), "N/A", "N/A");
+            Project.addEmpRecords(empList);
+            Project.closeFile();
+            
+            tbFirstName.setText("");
+            tbLastName.setText("");
+            tbPhone.setText("");
+            tbEmail.setText("");
+            tbSSN.setText("");
+            tbEmplyID.setText("");
+
+//            for (int i = 0; i < model.getRowCount(); i++) {
+//                String first = model.getValueAt(i, 2).toString();
+//                String last = model.getValueAt(i, 1).toString();
+//                String gend = model.getValueAt(i, 3).toString();
+//                String tphone = model.getValueAt(i, 4).toString();
+//                String empID = model.getValueAt(i, 0).toString();
+//                String mail = model.getValueAt(i, 5).toString();
+//                String HD = model.getValueAt(i, 6).toString();
+//                String ED = model.getValueAt(i, 7).toString();
+//                
+//                
+//                temp.add(first, last, gend, tphone, empID, "N/A", mail, HD, ED);
+//                
+//            }
+        }
+
+
+    }//GEN-LAST:event_bnAddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,8 +565,106 @@ public class EmployeeForm extends javax.swing.JFrame {
         });
     }
 
+    //first name validation
+    public static boolean validateFirstName(String firstName) {
+        return firstName.matches("[A-Z][a-zA-Z]*");
+
+    }
+
+    //last name validation
+    public static boolean validateLastName(String lastName) {
+        return lastName.matches("[a-zA-z]+(['-][a-zA-Z]+)*");
+    }
+
+    public static void informationMessage(String message, String titleBar) {
+        JOptionPane.showMessageDialog(null, message, "ERROR: " + titleBar, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static String formatThis(String temp) {
+        char[] charArray = temp.toCharArray();
+        int count = 0;
+        String phoneNumber = "";
+        for (char character : charArray) {
+
+            if (Character.isDigit(character)) {
+                phoneNumber = phoneNumber + character;
+                count++;
+                if (count == 3 || count == 6) {
+                    phoneNumber = phoneNumber + "-";
+                }
+            }
+        }
+        return phoneNumber;
+    }
+
+    public static boolean validateSocial(String social) {
+        int val = 0;
+
+        if (social.matches("[1-9]\\d{2}[-][1-9]\\d{1}[-][1-9]\\d{3}")) {
+            val++;
+        }
+
+        if (social.matches("[1-9]\\d{2}[ ][1-9]\\d{1}[ ][1-9]\\d{3}")) {
+            val++;
+        }
+
+        if (social.matches("[1-9]\\d{8}")) {
+            val++;
+        }
+
+        if (val == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean validatePhone(String phone) {
+        int val = 0;
+
+        if (phone.matches("[1-9]\\d{2}[.][1-9]\\d{2}[.][1-9]\\d{3}")) {
+            val++;
+        }
+
+        if (phone.matches("[1-9]\\d{9}")) {
+            val++;
+        }
+
+        if (phone.matches("[1-9]\\d{2}-[1-9]\\d{2}-\\d{4}")) {
+            val++;
+        }
+
+        if (phone.matches("[(][1-9]\\d{2}[)][1-9]\\d{2}[-][1-9]\\d{3}")) {
+            val++;
+        }
+
+        if (val == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean validateEmail(String email) {
+        return email.matches("[a-zA-z1-9.]+[@][a-zA-Z1-9]+[.][a-z]+");
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bnAdd;
+    private javax.swing.JButton bnCurrent;
+    private javax.swing.JButton bnPast;
+    private javax.swing.JButton bnUpdate;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -249,6 +673,15 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private java.awt.Label lbTest;
+    private javax.swing.JRadioButton rbFemale;
+    private javax.swing.JRadioButton rbMale;
+    private javax.swing.JTextField tbEmail;
+    private javax.swing.JTable tbEmployees;
+    private javax.swing.JTextField tbEmplyID;
+    private javax.swing.JTextField tbFirstName;
+    private javax.swing.JTextField tbLastName;
+    private javax.swing.JTextField tbPhone;
+    private javax.swing.JTextField tbSSN;
     // End of variables declaration//GEN-END:variables
 }

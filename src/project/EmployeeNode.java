@@ -16,14 +16,14 @@ public class EmployeeNode {
     private String gender;
     private String phone;
     private String employeeID;
-    private String secondPhone;
+    private String social;
     private String email;
     private String hireDate;
     private String endDate;
 
     private EmployeeNode next;
 
-    public EmployeeNode(String firstName, String lastName, String gender, String phone, String employeeID, String secondPhone, String email, String hireDate, String endDate) {
+    public EmployeeNode(String firstName, String lastName, String gender, String social, String employeeID, String phone, String email, String hireDate, String endDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -32,7 +32,7 @@ public class EmployeeNode {
         this.email = email;
         this.hireDate = hireDate;
         this.endDate = endDate;
-        this.secondPhone = secondPhone;
+        this.social = social;
         this.next = null;
     }
 
@@ -84,12 +84,12 @@ public class EmployeeNode {
         this.hireDate = hireDate;
     }
 
-    public String getSecondPhone() {
-        return secondPhone;
+    public String getSocial() {
+        return social;
     }
 
-    public void setSecondPhone(String secondPhone) {
-        this.secondPhone = secondPhone;
+    public void setSocial(String social) {
+        this.social = social;
     }
 
     public EmployeeNode getNext() {
@@ -115,7 +115,13 @@ public class EmployeeNode {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeNode{" + "firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender + ", phone=" + phone + ", employeeID=" + employeeID + ", social=" + social + ", email=" + email + ", hireDate=" + hireDate + ", endDate=" + endDate + ", next=" + next + '}';
+    }
     
     
 
+    
 }

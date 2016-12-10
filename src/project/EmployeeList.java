@@ -31,15 +31,15 @@ public class EmployeeList {
         }
     }
     
-    public void add(String firstName, String lastName, String gender, String phone, String employeeID, String secondPhone, String email, String hireDate, String endDate) {
+    public void add(String firstName, String lastName, String gender, String social, String employeeID, String phone, String email, String hireDate, String endDate) {
         if(isEmpty()) {
-            head = new EmployeeNode(firstName, lastName, gender, phone, employeeID, secondPhone, email, hireDate, endDate); 
+            head = new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate); 
         } else {
             EmployeeNode current = head;
             while(current.getNext() != null) {
                 current = current.getNext();
             } 
-            current.setNext(new EmployeeNode(firstName, lastName, gender, phone, employeeID, secondPhone, email, hireDate, endDate));
+            current.setNext(new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate));
         }
     }
         
