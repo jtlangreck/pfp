@@ -32,15 +32,15 @@ public class DepartmentList {
         }
     }
     
-    public void add(String Name, String Manager, int numEmployees) {
+    public void add(String Name) {
         if(isEmpty()) {
-            head = new DepartmentNode(Name, Manager, numEmployees); 
+            head = new DepartmentNode(Name); 
         } else {
             DepartmentNode current = head;
             while(current.getNext() != null) {
                 current = current.getNext();
             } 
-            current.setNext(new DepartmentNode(Name, Manager, numEmployees));
+            current.setNext(new DepartmentNode(Name));
         }
     }
         

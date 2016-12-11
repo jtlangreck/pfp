@@ -24,20 +24,21 @@ public class DepartmentForm extends javax.swing.JFrame {
      */
     public DepartmentForm() {
         initComponents();
-         dptr = readDepartment("Departments.txt");
+        dptr = readDepartment("Departments.txt");
         DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
 
         DepartmentNode temp = dptr.getHead();
         for (int i = 0; i < dptr.size(); i++) {
 
-            model.addRow(new Object[]{temp.getName(), temp.getManager(), temp.getNumEmployees()});
+            model.addRow(new Object[]{temp.getName()});
 //            output.format("%s %s %s %s %s %s %s %s %s%n", test.getFirstName(),
 //                    test.getLastName(), test.getGender(), test.getPhone(),
 //                    test.getEmployeeID(), test.getSecondPhone(),
 //                    test.getEmail(), test.getHireDate(), test.getEndDate());
 
             temp = temp.getNext();
-    }}
+    }
+       }
     
     public void close(){
         WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);

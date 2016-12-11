@@ -12,16 +12,13 @@ package project;
 public class DepartmentNode {
 
     private String Name;
-    private String Manager;
-    private int numEmployees;
   
 
     private DepartmentNode next;
 
-    public DepartmentNode(String Name, String Manager, int numEmployees) {
+    public DepartmentNode(String Name) {
         this.Name = Name;
-        this.Manager = Manager;
-        this.numEmployees = numEmployees;
+       
         this.next = null;
     }
 
@@ -33,22 +30,7 @@ public class DepartmentNode {
         this.Name = Name;
     }
 
-    public String getManager() {
-        return Manager;
-    }
-
-    public void setManager(String Manager) {
-        this.Manager = Manager;
-    }
-
-    public int getNumEmployees() {
-        return numEmployees;
-    }
-
-    public void setNumEmployees(int numEmployees) {
-        
-        this.numEmployees = numEmployees;
-    }
+   
 
      public DepartmentNode getNext() {
         return next;
@@ -60,7 +42,7 @@ public class DepartmentNode {
     
     @Override
     public String toString() {
-        return "DepartmentNode{" + "Name=" + Name + ", Manager=" + Manager + ", numEmployees=" + numEmployees + ", next=" + next + '}';
+        return "DepartmentNode{" + "Name=" + Name + ", next=" + next + '}';
     }
     
     

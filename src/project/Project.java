@@ -22,7 +22,7 @@ public class Project {
     private static Scanner input;
     public static EmployeeList empList;
     public static DepartmentList dptr;
-    public static AssignmentsList assign;
+    //public static AssignmentsList assign;
 
     /**
      * @param args the command line arguments
@@ -30,8 +30,9 @@ public class Project {
     public static void main(String[] args) {
         // TODO code application logic here
         empList = readEmployee("Employees.txt");
-         dptr = readDepartment("Departments.txt");
-         assign = readAssignment("Assignments.txt");
+        dptr = readDepartment("Departments.txt");
+     //    dptr = readDepartment("Departments.txt");
+       //  assign = readAssignment("Assignments.txt");
         new MainForm().setVisible(true);
     }
 
@@ -140,9 +141,7 @@ public class Project {
      public static DepartmentList readDepartment(String name) {
         String content = new String();
         String Name = "";
-        String Manager = "";
-        int numEmployees = 0;
-        
+       
         openFile(name);
 
         DepartmentList list = new DepartmentList();
@@ -158,15 +157,12 @@ public class Project {
                     Name = ss;
                 }
 
-                if (position == 2) {
-                    Manager = ss;
-                }
                 
 
                 position++;
 
             }
-            list.add(Name, Manager, numEmployees);
+            list.add(Name);
         }
 
         return list;
@@ -187,8 +183,7 @@ public class Project {
         DepartmentNode test = list.getHead();
         for (int i = 0; i < list.size(); i++) {
 
-            output.format("%s %s %s %s %s %s %s %s %s%n", test.getName(),
-                    test.getManager(), test.getNumEmployees());
+            output.format("%s %n", test.getName());
 
             test = test.getNext();
         }
