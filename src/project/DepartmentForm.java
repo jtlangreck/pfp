@@ -31,51 +31,44 @@ public class DepartmentForm extends javax.swing.JFrame {
         empList = readEmployee("Employees.txt");
         assign = readAssignments("Assignments.txt");
         dptr = readDepartments("Departments.txt");
-        
+
         AssignmentNode assTest = assign.getHead();
         EmployeeNode empTest = empList.getHead();
         DepartmentNode depTest = dptr.getHead();
 
-        
         int empCount = 0;
-        
+
         for (int i = 0; i < dptr.size(); i++) {
             String manager = "";
             empCount = 0;
             for (int j = 0; j < assign.size(); j++) {
                 if (depTest.getDeptName().equals(assTest.getDepartment())) {
-                     empCount++;
-                    for (int k = 0; k < empList.size(); k++){
-                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")){
-                           
+                    empCount++;
+                    for (int k = 0; k < empList.size(); k++) {
+                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")) {
+
                             manager = empTest.getFirstName() + " " + empTest.getLastName();
 
                         }
                         empTest = empTest.getNext();
                     }
 
-                    
                 }
                 empTest = empList.getHead();
                 assTest = assTest.getNext();
             }
-            
+
             model.addRow(new Object[]{depTest.getDeptName(), manager, String.valueOf(empCount)});
 
-//System.out.printf("%s %s %s%n", depTest.getDeptName(), manager, String.valueOf(empCount));
             assTest = assign.getHead();
 
             depTest = depTest.getNext();
         }
-        
-        
-        
-        
-        
+
     }
-    
-    public void close(){
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+
+    public void close() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
 
@@ -244,7 +237,7 @@ public class DepartmentForm extends javax.swing.JFrame {
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
         //Project.writefiles(); 
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
@@ -252,36 +245,36 @@ public class DepartmentForm extends javax.swing.JFrame {
         close();
         EmployeeForm e = new EmployeeForm();
         e.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         MainForm m = new MainForm();
         m.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         AssignmentForm a = new AssignmentForm();
         a.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         PayrollForm p = new PayrollForm();
         p.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu6MouseClicked
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
