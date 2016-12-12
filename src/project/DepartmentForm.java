@@ -38,8 +38,9 @@ public class DepartmentForm extends javax.swing.JFrame {
 
         
         int empCount = 0;
-        String manager = "";
+        
         for (int i = 0; i < dptr.size(); i++) {
+            String manager = "";
             empCount = 0;
             for (int j = 0; j < assign.size(); j++) {
                 if (depTest.getDeptName().equals(assTest.getDepartment())) {
