@@ -392,14 +392,35 @@ public class EmployeeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tbPhoneActionPerformed
 
     private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
+
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+        empList = readEmployee("Employees.txt");
+        EmployeeNode empTest = empList.getHead();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        for (int i = 0; i < model.getRowCount(); i++) {
+            for (int j = 0; j < empList.size(); j++) {
+                if (model.getValueAt(i, 0).toString().equals(empTest.getEmployeeID())) {
+                    String email = model.getValueAt(i, 5).toString();
+                    String phone = model.getValueAt(i, 4).toString();
+                    String hireDate = model.getValueAt(i, 6).toString();
+                    String endDate = model.getValueAt(i, 7).toString();
 
-        String sd = dateFormat.format(jdHire.getDate());
+                    empTest.setEmail(email);
+                    empTest.setPhone(phone);
+                    empTest.setHireDate(hireDate);
+                    empTest.setEndDate(endDate);
 
-        String date = String.valueOf(jdHire);
-        lbTest.setText(sd);
+                }
+
+                empTest = empTest.getNext();
+            }
+            empTest = empList.getHead();
+        }
+
+        Project.addEmpRecords(empList);
+        Project.closeFile();
+        
+        
 
 
     }//GEN-LAST:event_bnUpdateActionPerformed
