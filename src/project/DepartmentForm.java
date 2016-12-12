@@ -7,18 +7,70 @@ package project;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import javax.swing.table.DefaultTableModel;
+import static project.Project.empList;
+import static project.Project.readAssignments;
+import static project.Project.readDepartments;
+import static project.Project.dptr;
+import static project.Project.assign;
+import static project.Project.readEmployee;
 
 /**
  *
  * @author Jake Langreck
  */
-public class MainForm extends javax.swing.JFrame {
+public class DepartmentForm extends javax.swing.JFrame {
 
     /**
      * Creates new form MainForm
      */
-    public MainForm() {
+    public DepartmentForm() {
         initComponents();
+        //dptr = readDepartment("Departments.txt");
+        DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
+        empList = readEmployee("Employees.txt");
+        assign = readAssignments("Assignments.txt");
+        dptr = readDepartments("Departments.txt");
+        
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+        DepartmentNode depTest = dptr.getHead();
+
+        
+        int empCount = 0;
+        String manager = "";
+        for (int i = 0; i < dptr.size(); i++) {
+            empCount = 0;
+            for (int j = 0; j < assign.size(); j++) {
+                if (depTest.getDeptName().equals(assTest.getDepartment())) {
+                     empCount++;
+                    for (int k = 0; k < empList.size(); k++){
+                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")){
+                           
+                            manager = empTest.getFirstName() + " " + empTest.getLastName();
+
+                        }
+                        empTest = empTest.getNext();
+                    }
+
+                    
+                }
+                empTest = empList.getHead();
+                assTest = assTest.getNext();
+            }
+            
+            model.addRow(new Object[]{depTest.getDeptName(), manager, String.valueOf(empCount)});
+
+//System.out.printf("%s %s %s%n", depTest.getDeptName(), manager, String.valueOf(empCount));
+            assTest = assign.getHead();
+
+            depTest = depTest.getNext();
+        }
+        
+        
+        
+        
+        
     }
     
     public void close(){
@@ -35,10 +87,12 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbDepartments = new javax.swing.JTable();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -49,25 +103,38 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/project/index.jpg"))); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255)));
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 51, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Jamming Jelly, Incorporated");
+        jLabel2.setText("Jamming Jelly Departments");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(102, 0, 102));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Jamming Jelly preserves contain only\nnatural ingredients, without artificial\nflavors, perservatives, or coloring; and\nguarantees high-quality products with\nconsistent results.\n\nJamming Jelly offers a range of flavors of\nPremium Preserves, Bakery Jams, and\nGlazes for use in Bakery, Retail, and\nFoodservice operations.\n\nJamming Jelly uses 70% fruit preserves from\nthe famous Lake Lucerne Orchards in\nSwitzerland. These products are available\nin Tubs, Jars, and Portions, Bakery Jams,\nGels, and Glazes - all in a variety of flavors\nand sizes.\n\nCarefully selected fruits, premium\npackagaing, and a unique cooking method\nare what makes Jamming Jelly products so\nspecial.");
-        jTextArea1.setCaretColor(new java.awt.Color(153, 153, 255));
-        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextArea1.setDisabledTextColor(new java.awt.Color(204, 51, 255));
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel3.setText("Name:");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Add");
+
+        tbDepartments.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Manager", "Number of Employees"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tbDepartments);
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -138,14 +205,18 @@ public class MainForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addGap(88, 88, 88)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 290, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,12 +225,16 @@ public class MainForm extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,7 +242,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
-       // Project.writefiles(); 
+        //Project.writefiles(); 
         dispose(); 
     }//GEN-LAST:event_jMenu7MouseClicked
 
@@ -181,15 +256,15 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-          
+           close();
+        MainForm m = new MainForm();
+        m.setVisible(true);
+     
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-           close();
-        DepartmentForm d = new DepartmentForm();
-        d.setVisible(true);
-     
+        
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
@@ -207,6 +282,10 @@ public class MainForm extends javax.swing.JFrame {
         p.setVisible(true);
      
     }//GEN-LAST:event_jMenu6MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,26 +317,24 @@ public class MainForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainForm().setVisible(true);
+                new DepartmentForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tbDepartments;
     // End of variables declaration//GEN-END:variables
-
-
 }

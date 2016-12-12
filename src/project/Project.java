@@ -21,7 +21,7 @@ public class Project {
     private static Formatter output;
     private static Scanner input;
     public static EmployeeList empList;
-    //public static DepartmentList dptr;
+    public static DepartmentList dptr;
     public static AssignmentsList assign;
 
     /**
@@ -44,6 +44,35 @@ public class Project {
             System.err.println("Error opening file.");
             System.exit(1);
         }
+    }
+    
+    public static DepartmentList readDepartments(String name) {
+        String content = new String();
+        String deptName = "";
+
+        openFile(name);
+
+        DepartmentList list = new DepartmentList();
+        while (input.hasNextLine()) {
+
+            content = input.nextLine();
+
+            String[] arr = content.split(" ");
+            int position = 1;
+            for (String ss : arr) {
+
+                if (position == 1) {
+                    deptName = ss;
+                }
+
+                position++;
+
+            }
+            list.add(deptName);
+        }
+
+        return list;
+
     }
 
     public static EmployeeList readEmployee(String name) {

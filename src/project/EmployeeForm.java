@@ -31,10 +31,7 @@ public class EmployeeForm extends javax.swing.JFrame {
         for (int i = 0; i < empList.size(); i++) {
 
             model.addRow(new Object[]{temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), temp.getGender(), temp.getPhone(), temp.getEmail(), temp.getHireDate(), temp.getEndDate()});
-//            output.format("%s %s %s %s %s %s %s %s %s%n", test.getFirstName(),
-//                    test.getLastName(), test.getGender(), test.getPhone(),
-//                    test.getEmployeeID(), test.getSecondPhone(),
-//                    test.getEmail(), test.getHireDate(), test.getEndDate());
+
 
             temp = temp.getNext();
         }
@@ -106,7 +103,7 @@ public class EmployeeForm extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, true, true
+                false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -366,8 +363,8 @@ public class EmployeeForm extends javax.swing.JFrame {
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
         close();
-//        DepartmentForm d = new DepartmentForm();
-//        d.setVisible(true);
+        DepartmentForm d = new DepartmentForm();
+        d.setVisible(true);
 
     }//GEN-LAST:event_jMenu4MouseClicked
 
