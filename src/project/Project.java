@@ -21,8 +21,8 @@ public class Project {
     private static Formatter output;
     private static Scanner input;
     public static EmployeeList empList;
-    public static DepartmentList dptr;
-    //public static AssignmentsList assign;
+    //public static DepartmentList dptr;
+    public static AssignmentsList assign;
 
     /**
      * @param args the command line arguments
@@ -30,9 +30,10 @@ public class Project {
     public static void main(String[] args) {
         // TODO code application logic here
         empList = readEmployee("Employees.txt");
-        dptr = readDepartment("Departments.txt");
-     //    dptr = readDepartment("Departments.txt");
-       //  assign = readAssignment("Assignments.txt");
+        assign = readAssignments("Assignments.txt");
+        // dptr = readDepartment("Departments.txt");
+        //    dptr = readDepartment("Departments.txt");
+        //  assign = readAssignment("Assignments.txt");
         new MainForm().setVisible(true);
     }
 
@@ -136,72 +137,15 @@ public class Project {
         }
 
     }
-    
-    
-     public static DepartmentList readDepartment(String name) {
+
+    public static AssignmentsList readAssignments(String name) {
         String content = new String();
-        String Name = "";
-       
-        openFile(name);
-
-        DepartmentList list = new DepartmentList();
-        while (input.hasNextLine()) {
-
-            content = input.nextLine();
-
-            String[] arr = content.split(" ");
-            int position = 1;
-            for (String ss : arr) {
-
-                if (position == 1) {
-                    Name = ss;
-                }
-
-                
-
-                position++;
-
-            }
-            list.add(Name);
-        }
-
-        return list;
-
-    }
-
-    public static void addDepartmentRecords(DepartmentList list) {
-        try {
-            output = new java.util.Formatter("Departments.txt");
-        } catch (SecurityException securityException) {
-            System.err.println("Write permission denied. Terminating.");
-            System.exit(1);
-        } catch (FileNotFoundException fileNotFoundException) {
-            System.err.println("Error opening file. Terminating.");
-            System.exit(1);
-        }
-
-        DepartmentNode test = list.getHead();
-        for (int i = 0; i < list.size(); i++) {
-
-            output.format("%s %n", test.getName());
-
-            test = test.getNext();
-        }
-
-    }
-    
-    
-    
-     public static AssignmentsList readAssignment(String name) {
-        String content = new String();
-        String Department = "";
-        String employeeID = "";
-        String lastName = "";
-        String firstName ="";
-        String Rank = "";
+        String empID = "";
+        String department = "";
+        String rank = "";
         String beginDate = "";
-        String endDate  = "";
-        
+        String endDate = "";
+
         openFile(name);
 
         AssignmentsList list = new AssignmentsList();
@@ -213,49 +157,39 @@ public class Project {
             int position = 1;
             for (String ss : arr) {
 
-                 if (position == 1) {
-                    Department = ss;
+                if (position == 1) {
+                    empID = ss;
                 }
 
                 if (position == 2) {
-                    employeeID = ss;
+                    department = ss;
                 }
 
                 if (position == 3) {
-                    lastName = ss;
+                    rank = ss;
                 }
 
                 if (position == 4) {
-                    firstName = ss;
-                }
-
-                if (position == 5) {
-                   Rank = ss;
-                }
-
-                if (position == 6) {
                     beginDate = ss;
                 }
 
-                if (position == 7) {
+                if (position == 5) {
                     endDate = ss;
                 }
-
 
                 position++;
 
             }
-            list.add(Department,employeeID, lastName, firstName, Rank,beginDate, endDate);
-        
+            list.add(department, empID, rank, beginDate, endDate);
         }
 
         return list;
 
     }
 
-    public static void addAssignmentRecords(AssignmentsList list) {
+    public static void addToAssList(AssignmentsList list) {
         try {
-            output = new java.util.Formatter("Assignments.txt");
+            output = new Formatter("Assignments.txt");
         } catch (SecurityException securityException) {
             System.err.println("Write permission denied. Terminating.");
             System.exit(1);
@@ -267,9 +201,9 @@ public class Project {
         AssignmentNode test = list.getHead();
         for (int i = 0; i < list.size(); i++) {
 
-            output.format("%s %s %s %s %s %s %s %s %s%n", test.getDepartment(),
-                    test.getEmployeeID(), test.getLastName(), test.getFirstName(),
-                    test.getRank(), test.getBeginDate(), test.getEndDate());
+            output.format("%s %s %s %s %s%n", test.getEmployeeID(),
+                    test.getDepartment(), test.getRank(), test.getBeginDate(),
+                    test.getEndDate());
 
             test = test.getNext();
         }
@@ -282,4 +216,56 @@ public class Project {
         }
 
     }
+
+//     public static DepartmentList readDepartment(String name) {
+//        String content = new String();
+//        String Name = "";
+//       
+//        openFile(name);
+//
+//        DepartmentList list = new DepartmentList();
+//        while (input.hasNextLine()) {
+//
+//            content = input.nextLine();
+//
+//            String[] arr = content.split(" ");
+//            int position = 1;
+//            for (String ss : arr) {
+//
+//                if (position == 1) {
+//                    Name = ss;
+//                }
+//
+//                
+//
+//                position++;
+//
+//            }
+//            list.add(Name);
+//        }
+//
+//        return list;
+//
+//    }
+//
+//    public static void addDepartmentRecords(DepartmentList list) {
+//        try {
+//            output = new java.util.Formatter("Departments.txt");
+//        } catch (SecurityException securityException) {
+//            System.err.println("Write permission denied. Terminating.");
+//            System.exit(1);
+//        } catch (FileNotFoundException fileNotFoundException) {
+//            System.err.println("Error opening file. Terminating.");
+//            System.exit(1);
+//        }
+//
+//        DepartmentNode test = list.getHead();
+//        for (int i = 0; i < list.size(); i++) {
+//
+//            output.format("%s %n", test.getName());
+//
+//            test = test.getNext();
+//        }
+//
+//    }
 }

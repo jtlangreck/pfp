@@ -31,15 +31,15 @@ public class AssignmentsList {
         }
     }
     
-    public void add(String Department, String employeeID, String lastName, String firstName, String Rank, String beginDate, String endDate) {
+    public void add(String Department, String employeeID, String Rank, String beginDate, String endDate) {
         if(isEmpty()) {
-            head = new AssignmentNode(Department, employeeID, lastName, firstName, Rank, beginDate, endDate); 
+            head = new AssignmentNode(Department, employeeID, Rank, beginDate, endDate); 
         } else {
             AssignmentNode current = head;
             while(current.getNext() != null) {
                 current = current.getNext();
             } 
-            current.setNext(new AssignmentNode(Department, employeeID, lastName, firstName, Rank, beginDate, endDate));
+            current.setNext(new AssignmentNode(Department, employeeID, Rank, beginDate, endDate));
         }
     }
         

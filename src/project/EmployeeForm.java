@@ -366,8 +366,8 @@ public class EmployeeForm extends javax.swing.JFrame {
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
         close();
-        DepartmentForm d = new DepartmentForm();
-        d.setVisible(true);
+//        DepartmentForm d = new DepartmentForm();
+//        d.setVisible(true);
 
     }//GEN-LAST:event_jMenu4MouseClicked
 

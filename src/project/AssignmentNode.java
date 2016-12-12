@@ -13,19 +13,19 @@ public class AssignmentNode {
 
     private String Department;
     private String employeeID;
-    private String lastName;
-    private String firstName;
+    //private String lastName;
+   // private String firstName;
     private String Rank;
     private String beginDate;
     private String endDate;
 
     private AssignmentNode next;
 
-    public AssignmentNode(String Department, String employeeID, String lastName, String firstName, String Rank, String beginDate, String endDate) {
+    public AssignmentNode(String Department, String employeeID, String Rank, String beginDate, String endDate) {
         this.Department = Department;
         this.employeeID = employeeID;
-        this.lastName = lastName;
-        this.firstName = firstName;
+      //  this.lastName = lastName;
+      //  this.firstName = firstName;
         this.Rank = Rank;
         this.beginDate = beginDate;
         this.endDate = endDate;
@@ -49,21 +49,21 @@ public class AssignmentNode {
         this.employeeID = employeeID;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+//    public String getLastName() {
+//        return lastName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
 
     public String getRank() {
         return Rank;
@@ -98,16 +98,9 @@ public class AssignmentNode {
         this.next = next;
     }
 
-   
-
-    
-
     @Override
     public String toString() {
-        return "AssignmentNode{" + "Department=" + Department + ", employeeID=" + employeeID + ", lastName=" + lastName + ", firstName=" + firstName + ", Rank=" + Rank + ", beginDate=" + beginDate + ", endDate=" + endDate +", next=" + next + '}';
+        return "AssignmentNode{" + "Department=" + Department + ", employeeID=" + employeeID + ", Rank=" + Rank + ", beginDate=" + beginDate + ", endDate=" + endDate + ", next=" + next + '}';
     }
-    
-    
-
-    
+     
 }

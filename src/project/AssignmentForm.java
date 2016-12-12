@@ -7,6 +7,11 @@ package project;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import javax.swing.table.DefaultTableModel;
+import static project.Project.empList;
+import static project.Project.assign;
+import static project.Project.readAssignments;
+import static project.Project.readEmployee;
 
 /**
  *
@@ -19,10 +24,41 @@ public class AssignmentForm extends javax.swing.JFrame {
      */
     public AssignmentForm() {
         initComponents();
+
+        assign = readAssignments("Assignments.txt");
+        empList = readEmployee("Employees.txt");
+
+        DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
+
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+
+        for (int i = 0; i < assign.size(); i++) {
+            for (int j = 0; j < empList.size(); j++) {
+                if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+
+                    model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
+                          empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(),assTest.getBeginDate(), 
+                          assTest.getEndDate()});
+                    
+                    
+                  System.out.printf("%s  %s  %s  %s  %s   %s  %s%n", assTest.getDepartment(), assTest.getEmployeeID(),
+                          empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), assTest.getBeginDate(), 
+                          assTest.getEndDate());  
+//                    
+                }
+
+                empTest = empTest.getNext();
+            }
+            empTest = empList.getHead();
+
+            assTest = assTest.getNext();
+        }
+
     }
-    
-    public void close(){
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+
+    public void close() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
 
@@ -284,39 +320,41 @@ public class AssignmentForm extends javax.swing.JFrame {
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
         //Project.writefiles(); 
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-   
-     
+        close();
+        EmployeeForm p = new EmployeeForm();
+        p.setVisible(true);
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-      
+
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-           close();
-        DepartmentForm d = new DepartmentForm();
-        d.setVisible(true);
-     
+        close();
+//        DepartmentForm d = new DepartmentForm();
+//        d.setVisible(true);
+
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
         // TODO add your handling code here:
-      
-     
+
+
     }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         PayrollForm p = new PayrollForm();
         p.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu6MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
