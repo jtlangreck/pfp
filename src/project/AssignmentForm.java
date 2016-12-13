@@ -7,10 +7,15 @@ package project;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
+import static project.EmployeeForm.informationMessage;
 import static project.Project.empList;
 import static project.Project.assign;
 import static project.Project.dptr;
+import static project.Project.empList;
 import static project.Project.pay;
 import static project.Project.readAssignments;
 import static project.Project.readDepartments;
@@ -424,6 +429,34 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void bnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnAddActionPerformed
         // TODO add your handling code here:
+       /* int validate = 0;
+        DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        String hd = dateFormat.format(jdHire.getDate());
+        String ed = dateFormat.format(jdEnd.getDate());
+
+        model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed});
+
+            //(firstName, lastName, gender, social, id, phone, email, hireDate, endDate)
+            empList = readEmployee("Employees.txt");
+            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, tbSSN.getText(), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed);
+            Project.addEmpRecords(empList);
+            Project.closeFile();
+
+            tbFirstName.setText("");
+            tbLastName.setText("");
+            tbPhone.setText("");
+            tbEmail.setText("");
+            tbSSN.setText("");
+            tbEmplyID.setText("");
+
+        }*/
+
+
+                                         
+
+    
     }//GEN-LAST:event_bnAddActionPerformed
 
     private void bnPastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnPastActionPerformed
@@ -432,10 +465,85 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
         // TODO add your handling code here:
+        
+        DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
+        assign = readAssignments("Assignments.txt");
+ 
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+        
+        if (model.getRowCount() == assign.size()) {
+
+           for (int i = 0; i < assign.size(); i++) {
+            for (int j = 0; j < empList.size(); j++) {
+                if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+
+                    if (model.getValueAt(i, 0).toString().equals(assTest.getEmployeeID())) {
+                        String beginDate = model.getValueAt(i, 6).toString();
+                        String endDate = model.getValueAt(i, 7).toString();
+
+                       
+                        assTest.setEndDate(endDate);
+
+                    }
+
+                    assTest = assTest.getNext();
+                }
+                assTest = assign.getHead();
+            }}
+
+            Project.addToAssList(assign);
+            Project.closeFile();
+        } else {
+            String message = "Please hit refresh before attempting to update.";
+            String titleBar = "WARNING: DATA LOSS";
+            informationMessage(message, titleBar);
+                }
     }//GEN-LAST:event_bnUpdateActionPerformed
 
     private void bnCurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnCurrentActionPerformed
         // TODO add your handling code here:
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = new Date();
+        Date dateTest = new Date();
+
+        assign = readAssignments("Assignments.txt");
+   
+        DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
+
+        AssignmentNode atemp = assign.getHead();
+        EmployeeNode temp = empList.getHead();
+        DepartmentNode deptemp = dptr.getHead();
+        PayrollNode paytemp = pay.getHead();
+       
+        int rows = model.getRowCount();
+        for (int i = 0; i < rows; i++) {
+            model.removeRow(0);
+        }
+        
+        deptemp = dptr.getHead();
+        temp = empList.getHead();
+        atemp = assign.getHead();
+        paytemp = pay.getHead();
+        
+        for (int i = 0; i < assign.size(); i++) {
+            Date begin = new Date(atemp.getBeginDate());
+
+            if (atemp.getEndDate().equals("N/A")) {
+                Date end = new Date("12/12/9999");
+                dateTest = end;
+            } else {
+                Date end = new Date(atemp.getEndDate());
+                dateTest = end;
+            }
+
+            if (dateTest.after(today)) {
+                model.addRow(new Object[]{deptemp.getDeptName(), temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), paytemp.getRank(), temp.getEmail(), atemp.getBeginDate(), atemp.getEndDate()});
+            }
+            atemp = atemp.getNext();
+           
+            
+        }
     }//GEN-LAST:event_bnCurrentActionPerformed
 
     private void cbEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEmployeeIDActionPerformed

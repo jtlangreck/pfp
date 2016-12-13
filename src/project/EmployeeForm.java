@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import static project.Project.dptr;
 import static project.Project.empList;
 import static project.Project.readEmployee;
 
@@ -595,6 +596,9 @@ public class EmployeeForm extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
 
         EmployeeNode temp = empList.getHead();
+       
+        
+        
        
         int rows = model.getRowCount();
         for (int i = 0; i < rows; i++) {

@@ -24,6 +24,8 @@ public class PayrollNode {
       
     }
 
+    
+    
     public String getRank() {
         return Rank;
     }
