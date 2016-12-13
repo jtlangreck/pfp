@@ -10,8 +10,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.table.DefaultTableModel;
 import static project.Project.empList;
 import static project.Project.assign;
+import static project.Project.dptr;
+import static project.Project.pay;
 import static project.Project.readAssignments;
+import static project.Project.readDepartments;
 import static project.Project.readEmployee;
+import static project.Project.readPayroll;
 
 /**
  *
@@ -24,14 +28,26 @@ public class AssignmentForm extends javax.swing.JFrame {
      */
     public AssignmentForm() {
         initComponents();
+        
+        
 
         assign = readAssignments("Assignments.txt");
         empList = readEmployee("Employees.txt");
+        dptr = readDepartments("Departments.txt");
+        pay = readPayroll("Paygrade.txt");
+     
 
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
 
         AssignmentNode assTest = assign.getHead();
         EmployeeNode empTest = empList.getHead();
+        DepartmentNode dptrTest = dptr.getHead();
+        PayrollNode payTest = pay.getHead();
+       
+        
+       populateDepartment();
+       populateRank();
+      
 
         for (int i = 0; i < assign.size(); i++) {
             for (int j = 0; j < empList.size(); j++) {
@@ -50,6 +66,52 @@ public class AssignmentForm extends javax.swing.JFrame {
         }
 
     }
+    
+    
+    private void populateDepartment () { 
+        DepartmentNode dptrTest; 
+        dptrTest = Project.dptr.getHead(); 
+        cbDepartment.removeAllItems(); 
+        cbDepartment.addItem("Select One"); 
+        for (int i = 0; i < Project.dptr.size(); i++) { 
+           
+                cbDepartment.addItem(dptrTest.getDeptName()); 
+            dptrTest = dptrTest.getNext(); } 
+    }
+    
+    private void populateRank () { 
+        PayrollNode payTest; 
+        payTest = Project.pay.getHead(); 
+        cbRank.removeAllItems(); 
+        cbRank.addItem("Select One"); 
+        for (int i = 0; i < Project.pay.size(); i++) { 
+           
+            cbRank.addItem(payTest.getRank()); 
+            payTest = payTest.getNext(); 
+        } 
+    }
+    
+    /*    EmployeeNode eptr; 
+        eptr = Project.empList.getHead(); 
+        cbEmployeeID.removeAllItems(); 
+        cbEmployeeID.addItem("Select One"); 
+        for (int i = 0; i < Project.empList.size(); i++) { 
+            if (include(eptr.getEmployeeID())) {
+                cbEmployeeID.addItem(eptr.getEmployeeID()); } 
+            eptr = eptr.getNext(); } 
+    }
+    
+     /*   private boolean include(String employeeID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+    AssignmentNode assTest = assign.getHead();
+    EmployeeNode eptr;
+    eptr = Project.empList.getHead();
+    for(int i = 0; i < Project.empList.size(); i++) {
+   
+}*/
+  
+
 
     public void close() {
         WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -71,9 +133,9 @@ public class AssignmentForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cbEmployeeID = new javax.swing.JComboBox<>();
+        cbDepartment = new javax.swing.JComboBox<>();
+        cbRank = new javax.swing.JComboBox<>();
         jdHire = new com.toedter.calendar.JDateChooser();
         jdEnd = new com.toedter.calendar.JDateChooser();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -107,16 +169,26 @@ public class AssignmentForm extends javax.swing.JFrame {
 
         jLabel7.setText("End Date:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbEmployeeID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbEmployeeID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cbEmployeeIDActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbDepartment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbDepartmentActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbRank.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Level1", "Level2", "Level3", "Level4", "Level5", "Manager" }));
+        cbRank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbRankActionPerformed(evt);
+            }
+        });
 
         jdHire.setDateFormatString("MM/dd/yyyy");
 
@@ -245,7 +317,7 @@ public class AssignmentForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -254,8 +326,8 @@ public class AssignmentForm extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbRank, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jdEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                                 .addComponent(jdHire, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -278,15 +350,15 @@ public class AssignmentForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbRank, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -366,9 +438,19 @@ public class AssignmentForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bnCurrentActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cbEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEmployeeIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cbEmployeeIDActionPerformed
+
+    private void cbDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDepartmentActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_cbDepartmentActionPerformed
+
+    private void cbRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRankActionPerformed
+        // TODO add your handling code here:
+    
+    }//GEN-LAST:event_cbRankActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,9 +492,9 @@ public class AssignmentForm extends javax.swing.JFrame {
     private javax.swing.JButton bnCurrent;
     private javax.swing.JButton bnPast;
     private javax.swing.JButton bnUpdate;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> cbDepartment;
+    private javax.swing.JComboBox<String> cbEmployeeID;
+    private javax.swing.JComboBox<String> cbRank;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -432,3 +514,4 @@ public class AssignmentForm extends javax.swing.JFrame {
     private javax.swing.JTable tbAssignments;
     // End of variables declaration//GEN-END:variables
 }
+

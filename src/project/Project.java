@@ -23,6 +23,7 @@ public class Project {
     public static EmployeeList empList;
     public static DepartmentList dptr;
     public static AssignmentsList assign;
+    public static PayrollList pay;
 
     /**
      * @param args the command line arguments
@@ -69,6 +70,40 @@ public class Project {
 
             }
             list.add(deptName);
+        }
+
+        return list;
+
+    }
+    
+        public static PayrollList readPayroll(String name) {
+        String content = new String();
+        String Rank = "";
+        String Salary = "";
+
+        openFile(name);
+
+        PayrollList list = new PayrollList();
+        while (input.hasNextLine()) {
+
+            content = input.nextLine();
+
+            String[] arr = content.split(" ");
+            int position = 1;
+            for (String ss : arr) {
+
+                if (position == 1) {
+                    Rank = ss;
+                }
+                
+                if (position == 2) {
+                    Salary = ss;
+                }
+
+                position++;
+
+            }
+            list.add(Rank, Salary);
         }
 
         return list;
