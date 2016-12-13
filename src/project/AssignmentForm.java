@@ -96,7 +96,8 @@ public class AssignmentForm extends javax.swing.JFrame {
         } 
     }
     
-    /*    EmployeeNode eptr; 
+    private void populateEmployee() {
+        EmployeeNode eptr; 
         eptr = Project.empList.getHead(); 
         cbEmployeeID.removeAllItems(); 
         cbEmployeeID.addItem("Select One"); 
@@ -106,15 +107,24 @@ public class AssignmentForm extends javax.swing.JFrame {
             eptr = eptr.getNext(); } 
     }
     
-     /*   private boolean include(String employeeID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-    AssignmentNode assTest = assign.getHead();
-    EmployeeNode eptr;
+    private boolean include(String employeeID) {
+      
+        AssignmentNode assTest;
+        EmployeeNode eptr;
+    assTest = assign.getHead();
     eptr = Project.empList.getHead();
     for(int i = 0; i < Project.empList.size(); i++) {
+        for (int j = 0; j<Project.assign.size(); j++) {
+            if (assTest.getEmployeeID().equals(eptr.getEmployeeID())){
+                return false;
+            }
+            
+        }
+        
+    }
+    return true;
    
-}*/
+}
   
 
 
