@@ -444,12 +444,13 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void cbDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDepartmentActionPerformed
         // TODO add your handling code here:
+        cbDepartment.getSelectedItem();
        
     }//GEN-LAST:event_cbDepartmentActionPerformed
 
     private void cbRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRankActionPerformed
         // TODO add your handling code here:
-    
+    cbRank.getSelectedItem();
     }//GEN-LAST:event_cbRankActionPerformed
 
     /**
