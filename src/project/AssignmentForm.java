@@ -33,14 +33,11 @@ public class AssignmentForm extends javax.swing.JFrame {
      */
     public AssignmentForm() {
         initComponents();
-        
-        
 
         assign = readAssignments("Assignments.txt");
         empList = readEmployee("Employees.txt");
         dptr = readDepartments("Departments.txt");
         pay = readPayroll("Paygrade.txt");
-     
 
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
 
@@ -48,11 +45,10 @@ public class AssignmentForm extends javax.swing.JFrame {
         EmployeeNode empTest = empList.getHead();
         DepartmentNode dptrTest = dptr.getHead();
         PayrollNode payTest = pay.getHead();
-       
-        
-       populateDepartment();
-       populateRank();
-      
+
+        populateDepartment();
+        populateRank();
+        populateEmployee();
 
         for (int i = 0; i < assign.size(); i++) {
             for (int j = 0; j < empList.size(); j++) {
@@ -71,62 +67,64 @@ public class AssignmentForm extends javax.swing.JFrame {
         }
 
     }
-    
-    
-    private void populateDepartment () { 
-        DepartmentNode dptrTest; 
-        dptrTest = Project.dptr.getHead(); 
-        cbDepartment.removeAllItems(); 
-        cbDepartment.addItem("Select One"); 
-        for (int i = 0; i < Project.dptr.size(); i++) { 
-           
-                cbDepartment.addItem(dptrTest.getDeptName()); 
-            dptrTest = dptrTest.getNext(); } 
+
+    private void populateDepartment() {
+        DepartmentNode dptrTest;
+        dptrTest = Project.dptr.getHead();
+        cbDepartment.removeAllItems();
+        cbDepartment.addItem("Select One");
+        for (int i = 0; i < Project.dptr.size(); i++) {
+
+            cbDepartment.addItem(dptrTest.getDeptName());
+            dptrTest = dptrTest.getNext();
+        }
     }
-    
-    private void populateRank () { 
-        PayrollNode payTest; 
-        payTest = Project.pay.getHead(); 
-        cbRank.removeAllItems(); 
-        cbRank.addItem("Select One"); 
-        for (int i = 0; i < Project.pay.size(); i++) { 
-           
-            cbRank.addItem(payTest.getRank()); 
-            payTest = payTest.getNext(); 
-        } 
+
+    private void populateRank() {
+        PayrollNode payTest;
+        payTest = Project.pay.getHead();
+        cbRank.removeAllItems();
+        cbRank.addItem("Select One");
+        for (int i = 0; i < Project.pay.size(); i++) {
+
+            cbRank.addItem(payTest.getRank());
+            payTest = payTest.getNext();
+        }
     }
-    
+
     private void populateEmployee() {
-        EmployeeNode eptr; 
-        eptr = Project.empList.getHead(); 
-        cbEmployeeID.removeAllItems(); 
-        cbEmployeeID.addItem("Select One"); 
-        for (int i = 0; i < Project.empList.size(); i++) { 
-            if (include(eptr.getEmployeeID())) {
-                cbEmployeeID.addItem(eptr.getEmployeeID()); } 
-            eptr = eptr.getNext(); } 
-    }
-    
-    private boolean include(String employeeID) {
-      
-        AssignmentNode assTest;
+        empList = readEmployee("Employees.txt");
         EmployeeNode eptr;
-    assTest = assign.getHead();
-    eptr = Project.empList.getHead();
-    for(int i = 0; i < Project.empList.size(); i++) {
-        for (int j = 0; j<Project.assign.size(); j++) {
-            if (assTest.getEmployeeID().equals(eptr.getEmployeeID())){
+        AssignmentNode assTest;
+        assTest = assign.getHead();
+        eptr = empList.getHead();
+        cbEmployeeID.removeAllItems();
+        cbEmployeeID.addItem("Select One");
+
+        for (int i = 0; i < empList.size(); i++) {
+            if (include(eptr.getEmployeeID())) {
+                cbEmployeeID.addItem(eptr.getEmployeeID());
+            }
+
+            eptr = eptr.getNext();
+
+        }
+    }
+
+    private boolean include(String employeeID) {
+        assign = readAssignments("Assignments.txt");
+        AssignmentNode assTest = assign.getHead();
+
+        for (int j = 0; j < assign.size(); j++) {
+            if (employeeID.equals(assTest.getEmployeeID())) {
                 return false;
             }
-            
+            assTest = assTest.getNext();
         }
-        
-    }
-    return true;
-   
-}
-  
 
+        return true;
+
+    }
 
     public void close() {
         WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -439,7 +437,7 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void bnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnAddActionPerformed
         // TODO add your handling code here:
-       /* int validate = 0;
+        /* int validate = 0;
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -464,9 +462,6 @@ public class AssignmentForm extends javax.swing.JFrame {
         }*/
 
 
-                                         
-
-    
     }//GEN-LAST:event_bnAddActionPerformed
 
     private void bnPastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnPastActionPerformed
@@ -475,32 +470,32 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
         // TODO add your handling code here:
-        
+
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
         assign = readAssignments("Assignments.txt");
- 
+
         AssignmentNode assTest = assign.getHead();
         EmployeeNode empTest = empList.getHead();
-        
+
         if (model.getRowCount() == assign.size()) {
 
-           for (int i = 0; i < assign.size(); i++) {
-            for (int j = 0; j < empList.size(); j++) {
-                if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+            for (int i = 0; i < assign.size(); i++) {
+                for (int j = 0; j < empList.size(); j++) {
+                    if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
 
-                    if (model.getValueAt(i, 0).toString().equals(assTest.getEmployeeID())) {
-                        String beginDate = model.getValueAt(i, 6).toString();
-                        String endDate = model.getValueAt(i, 7).toString();
+                        if (model.getValueAt(i, 0).toString().equals(assTest.getEmployeeID())) {
+                            String beginDate = model.getValueAt(i, 6).toString();
+                            String endDate = model.getValueAt(i, 7).toString();
 
-                       
-                        assTest.setEndDate(endDate);
+                            assTest.setEndDate(endDate);
 
+                        }
+
+                        assTest = assTest.getNext();
                     }
-
-                    assTest = assTest.getNext();
+                    assTest = assign.getHead();
                 }
-                assTest = assign.getHead();
-            }}
+            }
 
             Project.addToAssList(assign);
             Project.closeFile();
@@ -508,7 +503,7 @@ public class AssignmentForm extends javax.swing.JFrame {
             String message = "Please hit refresh before attempting to update.";
             String titleBar = "WARNING: DATA LOSS";
             informationMessage(message, titleBar);
-                }
+        }
     }//GEN-LAST:event_bnUpdateActionPerformed
 
     private void bnCurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnCurrentActionPerformed
@@ -518,24 +513,24 @@ public class AssignmentForm extends javax.swing.JFrame {
         Date dateTest = new Date();
 
         assign = readAssignments("Assignments.txt");
-   
+
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
 
         AssignmentNode atemp = assign.getHead();
         EmployeeNode temp = empList.getHead();
         DepartmentNode deptemp = dptr.getHead();
         PayrollNode paytemp = pay.getHead();
-       
+
         int rows = model.getRowCount();
         for (int i = 0; i < rows; i++) {
             model.removeRow(0);
         }
-        
+
         deptemp = dptr.getHead();
         temp = empList.getHead();
         atemp = assign.getHead();
         paytemp = pay.getHead();
-        
+
         for (int i = 0; i < assign.size(); i++) {
             Date begin = new Date(atemp.getBeginDate());
 
@@ -551,8 +546,7 @@ public class AssignmentForm extends javax.swing.JFrame {
                 model.addRow(new Object[]{deptemp.getDeptName(), temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), paytemp.getRank(), temp.getEmail(), atemp.getBeginDate(), atemp.getEndDate()});
             }
             atemp = atemp.getNext();
-           
-            
+
         }
     }//GEN-LAST:event_bnCurrentActionPerformed
 
@@ -563,12 +557,12 @@ public class AssignmentForm extends javax.swing.JFrame {
     private void cbDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDepartmentActionPerformed
         // TODO add your handling code here:
         cbDepartment.getSelectedItem();
-       
+
     }//GEN-LAST:event_cbDepartmentActionPerformed
 
     private void cbRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRankActionPerformed
         // TODO add your handling code here:
-    cbRank.getSelectedItem();
+        cbRank.getSelectedItem();
     }//GEN-LAST:event_cbRankActionPerformed
 
     /**
@@ -633,4 +627,3 @@ public class AssignmentForm extends javax.swing.JFrame {
     private javax.swing.JTable tbAssignments;
     // End of variables declaration//GEN-END:variables
 }
-
