@@ -483,8 +483,6 @@ public class AssignmentForm extends javax.swing.JFrame {
         endDate = jdEnd.getDate();
         String hd = "";
         String ed;
-        
-        
 
         if (hireDate
                 == null) {

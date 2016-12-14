@@ -7,69 +7,68 @@ package project;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
-import static java.lang.Integer.valueOf;
 import javax.swing.table.DefaultTableModel;
-import static project.Project.assign;
 import static project.Project.empList;
-import static project.Project.pay;
 import static project.Project.readAssignments;
+import static project.Project.readDepartments;
+import static project.Project.dptr;
+import static project.Project.assign;
 import static project.Project.readEmployee;
-import static project.Project.readPayroll;
 
 /**
  *
  * @author Jake Langreck
  */
-public class PayrollForm extends javax.swing.JFrame {
+public class DepartmentForm extends javax.swing.JFrame {
 
     /**
      * Creates new form MainForm
      */
-    public PayrollForm() {
+    public DepartmentForm() {
         initComponents();
-        
-        DefaultTableModel model = (DefaultTableModel) tbPay.getModel();
-         empList = readEmployee("Employees.txt");
+        //dptr = readDepartment("Departments.txt");
+        DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
+        empList = readEmployee("Employees.txt");
         assign = readAssignments("Assignments.txt");
-         pay = readPayroll("Paygrade.txt");
-         
+        dptr = readDepartments("Departments.txt");
+
         AssignmentNode assTest = assign.getHead();
         EmployeeNode empTest = empList.getHead();
-       
-        PayrollNode payTest = pay.getHead();
-        
-        int TotalPay = 0;
-        
-     for (int k = 0; k < pay.size(); k++ ){
-             for (int i = 0; i < assign.size(); i++) { 
-         
-                if (payTest.getRank().equals(assTest.getRank())) {
-                    
-                    
-                    model.addRow(new Object[]{empTest.getLastName(), empTest.getFirstName(),
-                    payTest.getSalary()});
-                    TotalPay += valueOf(payTest.getSalary());
+        DepartmentNode depTest = dptr.getHead();
+
+        int empCount = 0;
+
+        for (int i = 0; i < dptr.size(); i++) {
+            String manager = "";
+            empCount = 0;
+            for (int j = 0; j < assign.size(); j++) {
+                if (depTest.getDeptName().equals(assTest.getDepartment())) {
+                    empCount++;
+                    for (int k = 0; k < empList.size(); k++) {
+                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")) {
+
+                            manager = empTest.getFirstName() + " " + empTest.getLastName();
+
+                        }
+                        empTest = empTest.getNext();
+                    }
+
                 }
-               
-               
-                empTest = empTest.getNext();
+                empTest = empList.getHead();
                 assTest = assTest.getNext();
             }
-              
-             empTest = empList.getHead();
+
+            model.addRow(new Object[]{depTest.getDeptName(), manager, String.valueOf(empCount)});
+
             assTest = assign.getHead();
 
-            payTest = payTest.getNext();
+            depTest = depTest.getNext();
         }
-     
-     
-     
-     jTextField1.setText(Integer.toString(TotalPay));
+
     }
-    
-    
-    public void close(){
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+
+    public void close() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
 
@@ -83,10 +82,11 @@ public class PayrollForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tbPay = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbDepartments = new javax.swing.JTable();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -100,14 +100,24 @@ public class PayrollForm extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 51, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Jamming Jelly Payroll");
+        jLabel2.setText("Jamming Jelly Departments");
 
-        tbPay.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel3.setText("Name:");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Add");
+
+        tbDepartments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Last Name", "First Name", "Salary"
+                "Name", "Manager", "Number of Employees"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -118,11 +128,7 @@ public class PayrollForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tbPay);
-
-        jLabel1.setText("Total Annual Pay:");
-
-        jTextField1.setEditable(false);
+        jScrollPane3.setViewportView(tbDepartments);
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -196,13 +202,15 @@ public class PayrollForm extends javax.swing.JFrame {
                 .addGap(0, 290, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,15 +219,16 @@ public class PayrollForm extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(43, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94))))
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -227,8 +236,8 @@ public class PayrollForm extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
-      //  Project.writefiles(); 
-        dispose(); 
+        //Project.writefiles(); 
+        dispose();
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
@@ -236,37 +245,41 @@ public class PayrollForm extends javax.swing.JFrame {
         close();
         EmployeeForm e = new EmployeeForm();
         e.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         MainForm m = new MainForm();
         m.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-           close();
-//        DepartmentForm d = new DepartmentForm();
-//        d.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         AssignmentForm a = new AssignmentForm();
         a.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
         // TODO add your handling code here:
-          
+        close();
+        PayrollForm p = new PayrollForm();
+        p.setVisible(true);
+
     }//GEN-LAST:event_jMenu6MouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -298,14 +311,15 @@ public class PayrollForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PayrollForm().setVisible(true);
+                new DepartmentForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -315,6 +329,6 @@ public class PayrollForm extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tbPay;
+    private javax.swing.JTable tbDepartments;
     // End of variables declaration//GEN-END:variables
 }

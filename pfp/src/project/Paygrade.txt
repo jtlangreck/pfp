@@ -1,0 +1,6 @@
+Level1	35000
+Level2	40000
+Level3	45000
+Level4	50000
+Level5	60000
+Manager	75000

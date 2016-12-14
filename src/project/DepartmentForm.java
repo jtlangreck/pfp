@@ -111,6 +111,11 @@ public class DepartmentForm extends javax.swing.JFrame {
         });
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         tbDepartments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -280,6 +285,49 @@ public class DepartmentForm extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         empList = readEmployee("Employees.txt");
+        assign = readAssignments("Assignments.txt");
+        dptr = readDepartments("Departments.txt");
+
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+        DepartmentNode depTest = dptr.getHead();
+            int empCount = 0;
+
+        for (int i = 0; i < dptr.size(); i++) {
+             DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
+            String manager = "";
+            empCount = 0;
+            for (int j = 0; j < assign.size(); j++) {
+                if (depTest.getDeptName().equals(assTest.getDepartment())) {
+                    empCount++;
+                    for (int k = 0; k < empList.size(); k++) {
+                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")) {
+
+                            manager = empTest.getFirstName() + " " + empTest.getLastName();
+                            model.addRow(new Object[]{jTextField1.getText(), manager, String.valueOf(empCount)});
+                  
+                        }
+                        
+                        empTest = empTest.getNext();
+                        }
+                   empTest = empList.getHead();
+                }
+                
+                assTest = assTest.getNext();
+            }
+
+            
+            
+            assTest = assign.getHead();
+
+            depTest = depTest.getNext();
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

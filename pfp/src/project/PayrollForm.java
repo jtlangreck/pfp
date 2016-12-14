@@ -42,15 +42,13 @@ public class PayrollForm extends javax.swing.JFrame {
         
      for (int k = 0; k < pay.size(); k++ ){
              for (int i = 0; i < assign.size(); i++) { 
-         
-                if (payTest.getRank().equals(assTest.getRank())) {
+                if (assTest.getRank().equals(payTest.getRank())) {
                     
                     
                     model.addRow(new Object[]{empTest.getLastName(), empTest.getFirstName(),
-                    payTest.getSalary()});
+                       payTest.getSalary()});
                     TotalPay += valueOf(payTest.getSalary());
                 }
-               
                
                 empTest = empTest.getNext();
                 assTest = assTest.getNext();
