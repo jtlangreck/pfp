@@ -3,5 +3,5 @@ JJ091453 Executive Manager 12/5/2000 N/A
 JJ456798 Accounting Rank2 1/1/2016 N/A
 JJ499999 Distribution Rank5 11/11/2011 11/11/2013
 JJ789451 Accounting Manager 11/11/2011 N/A
-JJ42144 Production Manager 12/12/2016 N/A
+JJ42144 Production Manager 12/12/2016 12/22/2016
 JJ129988 Customer Manager 12/23/2016 N/A

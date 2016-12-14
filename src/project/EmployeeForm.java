@@ -495,7 +495,15 @@ public class EmployeeForm extends javax.swing.JFrame {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         int selectedRow = tbEmployees.getSelectedRow();
         String empID = tbEmployees.getValueAt(selectedRow, 0).toString();
-        String ed = dateFormat.format(jdEnd.getDate());
+
+        Date endVoid = jdEnd.getDate();
+        String ed = "";
+        if (endVoid == null) {
+            ed = "N/A";
+        } else {
+            ed = dateFormat.format(jdEnd.getDate());
+        }
+
         String hd = tbEmployees.getValueAt(selectedRow, 6).toString();
         Date hireTest = new Date(hd);
         String response = validateDate(hireTest, jdEnd.getDate());
@@ -587,20 +595,18 @@ public class EmployeeForm extends javax.swing.JFrame {
                 validate++;
             }
         }
-        
-        
 
         //employeeID validation:
         tbEmplyID.setText(tbEmplyID.getText().trim());
         if (tbEmplyID.getText().trim().equals("")) {
             errID.setText("Please enter an Employee ID.");
         } else {
-            if ((validateID(tbEmplyID.getText()).equals(""))){
+            if ((validateID(tbEmplyID.getText()).equals(""))) {
                 validate++;
-            }else{
+            } else {
                 errID.setText(validateID(tbEmplyID.getText()));
             }
-            
+
         }
 
         //last name validation:

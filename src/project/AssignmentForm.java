@@ -244,6 +244,11 @@ public class AssignmentForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbAssignments.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbAssignmentsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbAssignments);
 
         bnAdd.setText("Add");
@@ -522,7 +527,7 @@ public class AssignmentForm extends javax.swing.JFrame {
             }
 
             assign = readAssignments("Assignments.txt");
-            assign.add(cbDepartment.getSelectedItem().toString(), cbEmployeeID.getSelectedItem().toString(),cbRank.getSelectedItem().toString(), hd, ed);
+            assign.add(cbDepartment.getSelectedItem().toString(), cbEmployeeID.getSelectedItem().toString(), cbRank.getSelectedItem().toString(), hd, ed);
             Project.addToAssList(assign);
             Project.closeFile();
 
@@ -588,37 +593,88 @@ public class AssignmentForm extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
         assign = readAssignments("Assignments.txt");
-        eraseError();
-        resetText();
         AssignmentNode assTest = assign.getHead();
-        EmployeeNode empTest = empList.getHead();
+        eraseError();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        int selectedRow = tbAssignments.getSelectedRow();
+        String empID = tbAssignments.getValueAt(selectedRow, 1).toString();
+        Date endVoid = jdEnd.getDate();
+        String ed = "";
+        if (endVoid == null) {
+            ed = "N/A";
+        } else {
+            ed = dateFormat.format(jdEnd.getDate());
+        }
+        String hd = tbAssignments.getValueAt(selectedRow, 6).toString();
+        Date hireTest = new Date(hd);
+        String response = validateDate(hireTest, jdEnd.getDate());
 
-        if (model.getRowCount() == assign.size()) {
-
-            for (int i = 0; i < assign.size(); i++) {
-                for (int j = 0; j < empList.size(); j++) {
-                    if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
-
-                        if (model.getValueAt(i, 0).toString().equals(assTest.getEmployeeID())) {
-                            String beginDate = model.getValueAt(i, 6).toString();
-                            String endDate = model.getValueAt(i, 7).toString();
-
-                            assTest.setEndDate(endDate);
-
-                        }
-
-                        assTest = assTest.getNext();
-                    }
-                    assTest = assign.getHead();
+        if (response.equals("")) {
+            if (ed.equals("12/12/9999")) {
+                ed = "N/A";
+            }
+            //lbTest.setText(String.valueOf(validate));
+            for (int j = 0; j < assign.size(); j++) {
+                if (empID.equals(assTest.getEmployeeID())) {
+                    assTest.setEndDate(ed);
                 }
+
+                assTest = assTest.getNext();
             }
 
             Project.addToAssList(assign);
             Project.closeFile();
+
+            assign = readAssignments("Assignments.txt");
+            empList = readEmployee("Employees.txt");
+            dptr = readDepartments("Departments.txt");
+            pay = readPayroll("Paygrade.txt");
+
+            model = (DefaultTableModel) tbAssignments.getModel();
+            resetText();
+            eraseError();
+            assTest = assign.getHead();
+            EmployeeNode empTest = empList.getHead();
+            DepartmentNode dptrTest = dptr.getHead();
+            PayrollNode payTest = pay.getHead();
+
+            Date today = new Date();
+            Date dateTest = new Date();
+            int rows = model.getRowCount();
+            for (int i = 0; i < rows; i++) {
+                model.removeRow(0);
+            }
+
+            populateDepartment();
+            populateRank();
+            populateEmployee();
+
+            for (int i = 0; i < assign.size(); i++) {
+                for (int j = 0; j < empList.size(); j++) {
+                    if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+                        if (assTest.getEndDate().equals("N/A")) {
+                            Date end = new Date("12/12/9999");
+                            dateTest = end;
+                        } else {
+                            Date end = new Date(assTest.getEndDate());
+                            dateTest = end;
+                        }
+
+                        if (dateTest.after(today)) {
+                            model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
+                                empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(), assTest.getBeginDate(),
+                                assTest.getEndDate()});
+                        }
+                    }
+
+                    empTest = empTest.getNext();
+                }
+                empTest = empList.getHead();
+
+                assTest = assTest.getNext();
+            }
         } else {
-            String message = "Please hit refresh before attempting to update.";
-            String titleBar = "WARNING: DATA LOSS";
-            informationMessage(message, titleBar);
+            errDate.setText(response);
         }
     }//GEN-LAST:event_bnUpdateActionPerformed
 
@@ -687,6 +743,21 @@ public class AssignmentForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         cbRank.getSelectedItem();
     }//GEN-LAST:event_cbRankActionPerformed
+
+    private void tbAssignmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAssignmentsMouseClicked
+        int selectedRow = tbAssignments.getSelectedRow();
+        eraseError();
+        resetText();
+        Date displayDate = new Date();
+        if (tbAssignments.getValueAt(selectedRow, 7).toString().equals("N/A")) {
+            Date date = new Date("12/12/9999");
+            displayDate = date;
+        } else {
+            Date date = new Date(tbAssignments.getValueAt(selectedRow, 7).toString());
+            displayDate = date;
+        }
+        jdEnd.setDate(displayDate);
+    }//GEN-LAST:event_tbAssignmentsMouseClicked
 
     /**
      * @param args the command line arguments
