@@ -273,6 +273,27 @@ public class Project {
         }
 
     }
+    
+    public static void addToDepartmentList(DepartmentList list){
+        try {
+            output = new Formatter("Departments.txt");
+        } catch (SecurityException securityException) {
+            System.err.println("Write permission denied. Terminating.");
+            System.exit(1);
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.err.println("Error opening file. Terminating.");
+            System.exit(1);
+        }
+
+        DepartmentNode test = list.getHead();
+        for (int i = 0; i < list.size(); i++) {
+
+            output.format("%s%n", test.getDeptName());
+                    
+
+            test = test.getNext();
+        }
+    }
 
     public static void closeFile() {
         if (output != null) {

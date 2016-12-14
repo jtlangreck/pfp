@@ -1,10 +1,12 @@
 Accounting
-Production
-Product Management
-Marketing
-Sales
-Customer Service
+Customer
 Distribution
-Quality Assurance
-Research
 Executive
+Marketing
+Mech
+Product
+Production
+Quality
+Research
+Sales
+Test

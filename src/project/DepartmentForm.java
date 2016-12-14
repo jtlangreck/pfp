@@ -13,6 +13,7 @@ import static project.Project.readAssignments;
 import static project.Project.readDepartments;
 import static project.Project.dptr;
 import static project.Project.assign;
+import static project.Project.closeFile;
 import static project.Project.readEmployee;
 
 /**
@@ -87,6 +88,8 @@ public class DepartmentForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbDepartments = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        errMessage = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -134,6 +137,10 @@ public class DepartmentForm extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tbDepartments);
+
+        jLabel1.setForeground(new java.awt.Color(255, 0, 51));
+
+        errMessage.setForeground(new java.awt.Color(255, 0, 0));
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -208,14 +215,21 @@ public class DepartmentForm extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(errMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,11 +243,15 @@ public class DepartmentForm extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1)
+                        .addGap(100, 100, 100)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(errMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -288,30 +306,55 @@ public class DepartmentForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         empList = readEmployee("Employees.txt");
+        empList = readEmployee("Employees.txt");
         assign = readAssignments("Assignments.txt");
         dptr = readDepartments("Departments.txt");
 
-        AssignmentNode assTest = assign.getHead();
-        EmployeeNode empTest = empList.getHead();
+        int empCount = 0;
         DepartmentNode depTest = dptr.getHead();
-            int empCount = 0;
+        int validate = 0;
+        int error = 0;
+        DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
+        String manager = "";
+        errMessage.setText("");
+        String dept = jTextField1.getText();
+        
 
-             DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
-            String manager = "";
-            empCount = 0;
-           
-                        
-                            model.addRow(new Object[]{jTextField1.getText(), manager, String.valueOf(empCount)});
-                  
-                        
-                        
-                       
             
-            
-      
+            if (!uniqueDepartment(dept)) {
+               errMessage.setText("This department already exists.");
+              
+            } else {
+                validate++;
+
+            }
+          
+        
+
+        if (validate == 1) {
+            model.addRow(new Object[]{jTextField1.getText(), manager, String.valueOf(empCount)});
+            dptr = readDepartments("Departments.txt");
+            dptr.add(jTextField1.getText());
+            Project.addToDepartmentList(dptr);
+            closeFile();
+        }
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public static boolean uniqueDepartment(String dept) {
+        dptr = readDepartments("Departments.txt");
+        DepartmentNode depTest = dptr.getHead();
+
+        for (int i = 0; i < dptr.size(); i++) {
+            if (dept.equals(depTest.getDeptName())) {
+                return false;
+            }
+            depTest = depTest.getNext();
+        }
+        return true;
+
+    }
 
     /**
      * @param args the command line arguments
@@ -327,16 +370,24 @@ public class DepartmentForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -349,7 +400,9 @@ public class DepartmentForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errMessage;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
