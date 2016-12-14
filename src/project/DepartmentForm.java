@@ -297,35 +297,19 @@ public class DepartmentForm extends javax.swing.JFrame {
         DepartmentNode depTest = dptr.getHead();
             int empCount = 0;
 
-        for (int i = 0; i < dptr.size(); i++) {
              DefaultTableModel model = (DefaultTableModel) tbDepartments.getModel();
             String manager = "";
             empCount = 0;
-            for (int j = 0; j < assign.size(); j++) {
-                if (depTest.getDeptName().equals(assTest.getDepartment())) {
-                    empCount++;
-                    for (int k = 0; k < empList.size(); k++) {
-                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID()) && assTest.getRank().equals("Manager")) {
-
-                            manager = empTest.getFirstName() + " " + empTest.getLastName();
+           
+                        
                             model.addRow(new Object[]{jTextField1.getText(), manager, String.valueOf(empCount)});
                   
-                        }
                         
-                        empTest = empTest.getNext();
-                        }
-                   empTest = empList.getHead();
-                }
-                
-                assTest = assTest.getNext();
-            }
-
+                        
+                       
             
             
-            assTest = assign.getHead();
-
-            depTest = depTest.getNext();
-        }
+      
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
