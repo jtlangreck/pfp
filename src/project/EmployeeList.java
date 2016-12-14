@@ -39,7 +39,7 @@ public class EmployeeList {
         if(isEmpty()) {
             head = new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate); 
         } else {
-              if ( head.getLastName().compareTo(lastName) < 0) { //if its less t han
+              if ( head.getLastName().compareTo(lastName) > 0) { //if its less t han
                     temp = head;  // save old head object
                     head = new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate); //add new head obj
                     head.setNext(temp); //set it as temp
@@ -49,7 +49,7 @@ public class EmployeeList {
                 current = head; 
                 temp = current;
             while(current.getNext() != null) {
-                if (current.getLastName().compareTo(lastName)<0) {
+                if (current.getLastName().compareTo(lastName)>0) {
                      temp.setNext(new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate));
                             temp2 = temp.getNext();  // get new objects address
                             temp2.setNext(current); //cset as current
@@ -58,7 +58,7 @@ public class EmployeeList {
                  temp = current;
                  current = current.getNext();
             } 
-           if ( current.getLastName().compareTo(lastName) < 0) 
+           if ( current.getLastName().compareTo(lastName) > 0) 
                         {
                             temp.setNext(new EmployeeNode(firstName, lastName, gender, social, employeeID, phone, email, hireDate, endDate));
                      
