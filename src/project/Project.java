@@ -192,8 +192,8 @@ public class Project {
         EmployeeNode test = list.getHead();
         for (int i = 0; i < list.size(); i++) {
 
-            output.format("%s %s %s %s %s %s %s %s %s%n", test.getFirstName(),
-                    test.getLastName(), test.getGender(), test.getPhone(),
+            output.format("%s %s %s %s %s %s %s %s %s%n", test.getLastName(),
+                    test.getFirstName(), test.getGender(), test.getPhone(),
                     test.getEmployeeID(), test.getSocial(),
                     test.getEmail(), test.getHireDate(), test.getEndDate());
 
