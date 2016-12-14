@@ -7,6 +7,14 @@ package project;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import static java.lang.Integer.valueOf;
+import javax.swing.table.DefaultTableModel;
+import static project.Project.assign;
+import static project.Project.empList;
+import static project.Project.pay;
+import static project.Project.readAssignments;
+import static project.Project.readEmployee;
+import static project.Project.readPayroll;
 
 /**
  *
@@ -19,7 +27,44 @@ public class PayrollForm extends javax.swing.JFrame {
      */
     public PayrollForm() {
         initComponents();
+        
+        DefaultTableModel model = (DefaultTableModel) tbPay.getModel();
+         empList = readEmployee("Employees.txt");
+        assign = readAssignments("Assignments.txt");
+         pay = readPayroll("Paygrade.txt");
+         
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+       
+        PayrollNode payTest = pay.getHead();
+        
+        int TotalPay = 0;
+        
+     for (int k = 0; k < pay.size(); k++ ){
+             for (int i = 0; i < assign.size(); i++) { 
+                if (assTest.getRank().equals(payTest.getRank())) {
+                    
+                    
+                    model.addRow(new Object[]{empTest.getLastName(), empTest.getFirstName(),
+                       payTest.getSalary()});
+                    TotalPay += valueOf(payTest.getSalary());
+                }
+               
+                empTest = empTest.getNext();
+                assTest = assTest.getNext();
+            }
+              
+             empTest = empList.getHead();
+            assTest = assign.getHead();
+
+            payTest = payTest.getNext();
+        }
+     
+     
+     
+     jTextField1.setText(Integer.toString(TotalPay));
     }
+    
     
     public void close(){
         WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
@@ -35,10 +80,11 @@ public class PayrollForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbPay = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -49,25 +95,32 @@ public class PayrollForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/project/index.jpg"))); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255), new java.awt.Color(204, 51, 255)));
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 51, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Jamming Jelly, Incorporated");
+        jLabel2.setText("Jamming Jelly Payroll");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(102, 0, 102));
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Jamming Jelly preserves contain only\nnatural ingredients, without artificial\nflavors, perservatives, or coloring; and\nguarantees high-quality products with\nconsistent results.\n\nJamming Jelly offers a range of flavors of\nPremium Preserves, Bakery Jams, and\nGlazes for use in Bakery, Retail, and\nFoodservice operations.\n\nJamming Jelly uses 70% fruit preserves from\nthe famous Lake Lucerne Orchards in\nSwitzerland. These products are available\nin Tubs, Jars, and Portions, Bakery Jams,\nGels, and Glazes - all in a variety of flavors\nand sizes.\n\nCarefully selected fruits, premium\npackagaing, and a unique cooking method\nare what makes Jamming Jelly products so\nspecial.");
-        jTextArea1.setCaretColor(new java.awt.Color(153, 153, 255));
-        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextArea1.setDisabledTextColor(new java.awt.Color(204, 51, 255));
-        jScrollPane1.setViewportView(jTextArea1);
+        tbPay.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Last Name", "First Name", "Salary"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tbPay);
+
+        jLabel1.setText("Total Annual Pay:");
+
+        jTextField1.setEditable(false);
 
         jMenuBar2.setBackground(new java.awt.Color(153, 102, 255));
 
@@ -138,14 +191,16 @@ public class PayrollForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addGap(88, 88, 88)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 290, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,12 +209,15 @@ public class PayrollForm extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(43, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94))))
         );
 
         pack();
@@ -253,7 +311,8 @@ public class PayrollForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tbPay;
     // End of variables declaration//GEN-END:variables
 }
