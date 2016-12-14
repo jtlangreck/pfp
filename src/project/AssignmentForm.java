@@ -46,6 +46,13 @@ public class AssignmentForm extends javax.swing.JFrame {
         DepartmentNode dptrTest = dptr.getHead();
         PayrollNode payTest = pay.getHead();
 
+        Date today = new Date();
+        Date dateTest = new Date();
+        int rows = model.getRowCount();
+        for (int i = 0; i < rows; i++) {
+            model.removeRow(0);
+        }
+
         populateDepartment();
         populateRank();
         populateEmployee();
@@ -53,10 +60,19 @@ public class AssignmentForm extends javax.swing.JFrame {
         for (int i = 0; i < assign.size(); i++) {
             for (int j = 0; j < empList.size(); j++) {
                 if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+                    if (assTest.getEndDate().equals("N/A")) {
+                        Date end = new Date("12/12/9999");
+                        dateTest = end;
+                    } else {
+                        Date end = new Date(assTest.getEndDate());
+                        dateTest = end;
+                    }
 
-                    model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
-                        empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(), assTest.getBeginDate(),
-                        assTest.getEndDate()});
+                    if (dateTest.after(today)) {
+                        model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
+                            empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(), assTest.getBeginDate(),
+                            assTest.getEndDate()});
+                    }
                 }
 
                 empTest = empTest.getNext();
@@ -465,7 +481,53 @@ public class AssignmentForm extends javax.swing.JFrame {
     }//GEN-LAST:event_bnAddActionPerformed
 
     private void bnPastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnPastActionPerformed
-        // TODO add your handling code here:
+        assign = readAssignments("Assignments.txt");
+        empList = readEmployee("Employees.txt");
+        dptr = readDepartments("Departments.txt");
+        pay = readPayroll("Paygrade.txt");
+
+        DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
+        int rows = model.getRowCount();
+        for (int i = 0; i < rows; i++) {
+            model.removeRow(0);
+        }
+
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+        DepartmentNode dptrTest = dptr.getHead();
+        PayrollNode payTest = pay.getHead();
+
+        Date today = new Date();
+        Date dateTest = new Date();
+
+        populateDepartment();
+        populateRank();
+        populateEmployee();
+
+        for (int i = 0; i < assign.size(); i++) {
+            for (int j = 0; j < empList.size(); j++) {
+                if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+                    if (assTest.getEndDate().equals("N/A")) {
+                        Date end = new Date("12/12/9999");
+                        dateTest = end;
+                    } else {
+                        Date end = new Date(assTest.getEndDate());
+                        dateTest = end;
+                    }
+
+                    if (dateTest.before(today)) {
+                        model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
+                            empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(), assTest.getBeginDate(),
+                            assTest.getEndDate()});
+                    }
+                }
+
+                empTest = empTest.getNext();
+            }
+            empTest = empList.getHead();
+
+            assTest = assTest.getNext();
+        }
     }//GEN-LAST:event_bnPastActionPerformed
 
     private void bnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnUpdateActionPerformed
@@ -508,45 +570,51 @@ public class AssignmentForm extends javax.swing.JFrame {
 
     private void bnCurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnCurrentActionPerformed
         // TODO add your handling code here:
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        Date today = new Date();
-        Date dateTest = new Date();
-
         assign = readAssignments("Assignments.txt");
+        empList = readEmployee("Employees.txt");
+        dptr = readDepartments("Departments.txt");
+        pay = readPayroll("Paygrade.txt");
 
         DefaultTableModel model = (DefaultTableModel) tbAssignments.getModel();
-
-        AssignmentNode atemp = assign.getHead();
-        EmployeeNode temp = empList.getHead();
-        DepartmentNode deptemp = dptr.getHead();
-        PayrollNode paytemp = pay.getHead();
-
         int rows = model.getRowCount();
         for (int i = 0; i < rows; i++) {
             model.removeRow(0);
         }
+        AssignmentNode assTest = assign.getHead();
+        EmployeeNode empTest = empList.getHead();
+        DepartmentNode dptrTest = dptr.getHead();
+        PayrollNode payTest = pay.getHead();
 
-        deptemp = dptr.getHead();
-        temp = empList.getHead();
-        atemp = assign.getHead();
-        paytemp = pay.getHead();
+        Date today = new Date();
+        Date dateTest = new Date();
+
+        populateDepartment();
+        populateRank();
+        populateEmployee();
 
         for (int i = 0; i < assign.size(); i++) {
-            Date begin = new Date(atemp.getBeginDate());
+            for (int j = 0; j < empList.size(); j++) {
+                if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+                    if (assTest.getEndDate().equals("N/A")) {
+                        Date end = new Date("12/12/9999");
+                        dateTest = end;
+                    } else {
+                        Date end = new Date(assTest.getEndDate());
+                        dateTest = end;
+                    }
 
-            if (atemp.getEndDate().equals("N/A")) {
-                Date end = new Date("12/12/9999");
-                dateTest = end;
-            } else {
-                Date end = new Date(atemp.getEndDate());
-                dateTest = end;
+                    if (dateTest.after(today)) {
+                        model.addRow(new Object[]{assTest.getDepartment(), assTest.getEmployeeID(),
+                            empTest.getLastName(), empTest.getFirstName(), assTest.getRank(), empTest.getEmail(), assTest.getBeginDate(),
+                            assTest.getEndDate()});
+                    }
+                }
+
+                empTest = empTest.getNext();
             }
+            empTest = empList.getHead();
 
-            if (dateTest.after(today)) {
-                model.addRow(new Object[]{deptemp.getDeptName(), temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), paytemp.getRank(), temp.getEmail(), atemp.getBeginDate(), atemp.getEndDate()});
-            }
-            atemp = atemp.getNext();
-
+            assTest = assTest.getNext();
         }
     }//GEN-LAST:event_bnCurrentActionPerformed
 
