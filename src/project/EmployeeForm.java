@@ -587,25 +587,26 @@ public class EmployeeForm extends javax.swing.JFrame {
                 validate++;
             }
         }
+        
+        
 
         //employeeID validation:
         tbEmplyID.setText(tbEmplyID.getText().trim());
         if (tbEmplyID.getText().trim().equals("")) {
             errID.setText("Please enter an Employee ID.");
-
         } else {
-            if (!validateID(tbEmplyID.getText())) {
-                errID.setText("Please enter a valid ID. Example: JJ12345");
-
-            } else {
+            if ((validateID(tbEmplyID.getText()).equals(""))){
                 validate++;
-
+            }else{
+                errID.setText(validateID(tbEmplyID.getText()));
             }
+            
         }
 
         //last name validation:
         tbLastName.setText(tbLastName.getText().trim());
-        if (tbLastName.getText().trim().equals("")) {
+        if (tbLastName.getText()
+                .trim().equals("")) {
             errLast.setText("Please enter a last name.");
 
         } else {
@@ -624,7 +625,8 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         //phone validation:
         tbPhone.setText(tbPhone.getText().trim());
-        if (tbPhone.getText().trim().equals("")) {
+        if (tbPhone.getText()
+                .trim().equals("")) {
             errPhone.setText("Please enter a phone number.");
 
         } else {
@@ -637,7 +639,8 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         //email validation:
         tbEmail.setText(tbEmail.getText().trim());
-        if (tbEmail.getText().trim().equals("")) {
+        if (tbEmail.getText()
+                .trim().equals("")) {
             errEmail.setText("Please enter an email address.");
 
         } else {
@@ -650,7 +653,8 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         //validate Social:
         tbSSN.setText(tbSSN.getText().trim());
-        if (tbSSN.getText().trim().equals("")) {
+        if (tbSSN.getText()
+                .trim().equals("")) {
             errSocial.setText("Please enter a social security number.");
 
         } else {
@@ -669,14 +673,16 @@ public class EmployeeForm extends javax.swing.JFrame {
         String hd = "";
         String ed;
 
-        if (hireDate == null) {
+        if (hireDate
+                == null) {
             errDate.setText("Please enter a Hire Date.");
 
         } else {
             hd = dateFormat.format(jdHire.getDate());
         }
 
-        if (endDate == null) {
+        if (endDate
+                == null) {
             ed = "N/A";
         } else {
             ed = dateFormat.format(jdEnd.getDate());
@@ -684,7 +690,8 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         String response = validateDate(hireDate, endDate);
 
-        if (hireDate != null) {
+        if (hireDate
+                != null) {
             if (response.equals("")) {
                 validate++;
             } else {
@@ -693,7 +700,8 @@ public class EmployeeForm extends javax.swing.JFrame {
         }
 
         //total validation test
-        if (validate == 8) {
+        if (validate
+                == 8) {
             String firstName = tbFirstName.getText().substring(0, 1).toUpperCase() + tbFirstName.getText().substring(1);
 
             model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed});
@@ -811,16 +819,24 @@ public class EmployeeForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -861,6 +877,31 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     public static void informationMessage(String message, String titleBar) {
         JOptionPane.showMessageDialog(null, message, "ERROR: " + titleBar, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static String validateID(String ID) {
+        String response = "";
+        if (!ID.matches("[J][J][0-9]*")) {
+            response = "Please enter a valid ID. Example: JJ12345";
+        }
+        if (!uniqueID(ID)) {
+            response = "This ID already exists";
+        }
+        return response;
+    }
+
+    public static boolean uniqueID(String ID) {
+
+        empList = readEmployee("Employees.txt");
+        EmployeeNode temp = empList.getHead();
+
+        for (int i = 0; i < empList.size(); i++) {
+            if (ID.equals(temp.getEmployeeID())) {
+                return false;
+            }
+            temp = temp.getNext();
+        }
+        return true;
     }
 
     public static String formatSocial(String temp) {
@@ -942,10 +983,6 @@ public class EmployeeForm extends javax.swing.JFrame {
         } else {
             return false;
         }
-    }
-
-    public static boolean validateID(String ID) {
-        return ID.matches("[J][J][1-9]*");
     }
 
     public static boolean validateEmail(String email) {
