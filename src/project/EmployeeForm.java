@@ -491,53 +491,66 @@ public class EmployeeForm extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
         empList = readEmployee("Employees.txt");
         EmployeeNode empTest = empList.getHead();
+        resetError();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         int selectedRow = tbEmployees.getSelectedRow();
         String empID = tbEmployees.getValueAt(selectedRow, 0).toString();
         String ed = dateFormat.format(jdEnd.getDate());
-        resetError();
+        String hd = tbEmployees.getValueAt(selectedRow, 6).toString();
+        Date hireTest = new Date(hd);
+        String response = validateDate(hireTest, jdEnd.getDate());
+        
+        
+        
+        if (response.equals("")) {
+            if (ed.equals("12/12/9999")){
+                ed = "N/A";
+            }
+            //lbTest.setText(String.valueOf(validate));
+            for (int j = 0; j < empList.size(); j++) {
+                if (empID.equals(empTest.getEmployeeID())) {
+                    empTest.setEndDate(ed);
+                }
 
-        for (int j = 0; j < empList.size(); j++) {
-            if (empID.equals(empTest.getEmployeeID())) {
-                empTest.setEndDate(ed);
+                empTest = empTest.getNext();
             }
 
-            empTest = empTest.getNext();
-        }
+            Project.addEmpRecords(empList);
+            Project.closeFile();
 
-        Project.addEmpRecords(empList);
-        Project.closeFile();
+            //DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            Date today = new Date();
+            Date dateTest = new Date();
 
-        //DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        Date today = new Date();
-        Date dateTest = new Date();
+            empList = readEmployee("Employees.txt");
+            // DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
 
-        empList = readEmployee("Employees.txt");
-        // DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
+            EmployeeNode temp = empList.getHead();
 
-        EmployeeNode temp = empList.getHead();
-
-        int rows = model.getRowCount();
-        for (int i = 0; i < rows; i++) {
-            model.removeRow(0);
-        }
-
-        temp = empList.getHead();
-        for (int i = 0; i < empList.size(); i++) {
-            Date hire = new Date(temp.getHireDate());
-
-            if (temp.getEndDate().equals("N/A")) {
-                Date end = new Date("12/12/9999");
-                dateTest = end;
-            } else {
-                Date end = new Date(temp.getEndDate());
-                dateTest = end;
+            int rows = model.getRowCount();
+            for (int i = 0; i < rows; i++) {
+                model.removeRow(0);
             }
 
-            if (dateTest.after(today)) {
-                model.addRow(new Object[]{temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), temp.getGender(), temp.getPhone(), temp.getEmail(), temp.getHireDate(), temp.getEndDate()});
+            temp = empList.getHead();
+            for (int i = 0; i < empList.size(); i++) {
+                Date hire = new Date(temp.getHireDate());
+
+                if (temp.getEndDate().equals("N/A")) {
+                    Date end = new Date("12/12/9999");
+                    dateTest = end;
+                } else {
+                    Date end = new Date(temp.getEndDate());
+                    dateTest = end;
+                }
+
+                if (dateTest.after(today)) {
+                    model.addRow(new Object[]{temp.getEmployeeID(), temp.getLastName(), temp.getFirstName(), temp.getGender(), temp.getPhone(), temp.getEmail(), temp.getHireDate(), temp.getEndDate()});
+                }
+                temp = temp.getNext();
             }
-            temp = temp.getNext();
+        } else {
+            errDate.setText(response);
         }
 
     }//GEN-LAST:event_bnUpdateActionPerformed
@@ -687,7 +700,7 @@ public class EmployeeForm extends javax.swing.JFrame {
             model.addRow(new Object[]{tbEmplyID.getText(), tbLastName.getText(), firstName, gender, formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed});
 
             empList = readEmployee("Employees.txt");
-            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, tbSSN.getText(), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed);
+            empList.add(tbFirstName.getText(), tbLastName.getText(), gender, formatSocial(tbSSN.getText()), tbEmplyID.getText(), formatThis(tbPhone.getText()), tbEmail.getText(), hd, ed);
             Project.addEmpRecords(empList);
             Project.closeFile();
 
@@ -771,6 +784,8 @@ public class EmployeeForm extends javax.swing.JFrame {
     private void tbEmployeesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEmployeesMouseClicked
         //DefaultTableModel model = (DefaultTableModel) tbEmployees.getModel();
         int selectedRow = tbEmployees.getSelectedRow();
+        resetError();
+        resetText();
         Date displayDate = new Date();
         if (tbEmployees.getValueAt(selectedRow, 7).toString().equals("N/A")) {
             Date date = new Date("12/12/9999");
@@ -826,6 +841,10 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     public static String validateDate(Date hire, Date end) {
         String response = "";
+        Date infinite = new Date("12/31/9999");
+        if (end == null) {
+            end = infinite;
+        }
         if (hire != null) {
 
             if (hire.after(end)) {
@@ -843,6 +862,22 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     public static void informationMessage(String message, String titleBar) {
         JOptionPane.showMessageDialog(null, message, "ERROR: " + titleBar, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static String formatSocial(String temp) {
+        char[] charArray = temp.toCharArray();
+        int count = 0;
+        String social = "";
+        for (char character : charArray) {
+            if (Character.isDigit(character)) {
+                social = social + character;
+                count++;
+                if (count == 3 || count == 5) {
+                    social = social + "-";
+                }
+            }
+        }
+        return social;
     }
 
     public static String formatThis(String temp) {
