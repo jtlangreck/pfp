@@ -499,11 +499,9 @@ public class EmployeeForm extends javax.swing.JFrame {
         String hd = tbEmployees.getValueAt(selectedRow, 6).toString();
         Date hireTest = new Date(hd);
         String response = validateDate(hireTest, jdEnd.getDate());
-        
-        
-        
+
         if (response.equals("")) {
-            if (ed.equals("12/12/9999")){
+            if (ed.equals("12/12/9999")) {
                 ed = "N/A";
             }
             //lbTest.setText(String.valueOf(validate));
@@ -694,6 +692,7 @@ public class EmployeeForm extends javax.swing.JFrame {
             }
         }
 
+        //total validation test
         if (validate == 8) {
             String firstName = tbFirstName.getText().substring(0, 1).toUpperCase() + tbFirstName.getText().substring(1);
 
