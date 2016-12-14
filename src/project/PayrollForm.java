@@ -27,49 +27,49 @@ public class PayrollForm extends javax.swing.JFrame {
      */
     public PayrollForm() {
         initComponents();
-        
+
         DefaultTableModel model = (DefaultTableModel) tbPay.getModel();
-         empList = readEmployee("Employees.txt");
+        empList = readEmployee("Employees.txt");
         assign = readAssignments("Assignments.txt");
-         pay = readPayroll("Paygrade.txt");
-         
+        pay = readPayroll("Paygrade.txt");
+
         AssignmentNode assTest = assign.getHead();
         EmployeeNode empTest = empList.getHead();
-       
+
         PayrollNode payTest = pay.getHead();
-        
+
         int TotalPay = 0;
-        
-     for (int k = 0; k < pay.size(); k++ ){
-             for (int i = 0; i < assign.size(); i++) { 
-         
+
+        for (int k = 0; k < pay.size(); k++) {
+            
+            for (int i = 0; i < assign.size(); i++) {
+
                 if (payTest.getRank().equals(assTest.getRank())) {
-                    
-                    
-                    model.addRow(new Object[]{empTest.getLastName(), empTest.getFirstName(),
-                    payTest.getSalary()});
-                    TotalPay += valueOf(payTest.getSalary());
+                    for (int j = 0; j < empList.size(); j++) {
+                        if (assTest.getEmployeeID().equals(empTest.getEmployeeID())) {
+                            model.addRow(new Object[]{empTest.getLastName(), empTest.getFirstName(),
+                                payTest.getSalary()});
+                            TotalPay += valueOf(payTest.getSalary());
+                        }
+                        empTest = empTest.getNext();
+                    }
                 }
-               
-               
-                empTest = empTest.getNext();
+                empTest = empList.getHead();
+                
                 assTest = assTest.getNext();
             }
-              
-             empTest = empList.getHead();
-            assTest = assign.getHead();
 
+           
+            assTest = assign.getHead();
+           
             payTest = payTest.getNext();
         }
-     
-     
-     
-     jTextField1.setText(Integer.toString(TotalPay));
+
+        jTextField1.setText(Integer.toString(TotalPay));
     }
-    
-    
-    public void close(){
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+
+    public void close() {
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
 
@@ -227,8 +227,8 @@ public class PayrollForm extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // TODO add your handling code here:
-      //  Project.writefiles(); 
-        dispose(); 
+        //  Project.writefiles(); 
+        dispose();
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
@@ -236,36 +236,36 @@ public class PayrollForm extends javax.swing.JFrame {
         close();
         EmployeeForm e = new EmployeeForm();
         e.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         MainForm m = new MainForm();
         m.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
 //        DepartmentForm d = new DepartmentForm();
 //        d.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
         // TODO add your handling code here:
-           close();
+        close();
         AssignmentForm a = new AssignmentForm();
         a.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
         // TODO add your handling code here:
-          
+
     }//GEN-LAST:event_jMenu6MouseClicked
 
     /**
